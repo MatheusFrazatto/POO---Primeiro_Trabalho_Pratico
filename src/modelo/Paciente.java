@@ -4,6 +4,8 @@
  */
 package modelo;
 
+import utilitario.TipoConvenio;
+
 import java.time.LocalDate;
 
 /**

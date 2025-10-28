@@ -1,5 +1,8 @@
 package modelo;
 
+import utilitario.TipoConsulta;
+import java.time.LocalDateTime;
+
 public class Consulta {
     private int id;
     private LocalDateTime dataHora;

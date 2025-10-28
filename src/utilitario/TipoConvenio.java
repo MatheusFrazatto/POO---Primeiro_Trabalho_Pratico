@@ -1,4 +1,4 @@
-package modelo;
+package utilitario;
 
 public enum TipoConvenio {
     PARTICULAR,
