@@ -7,6 +7,8 @@ package modelo;
 import utilitario.TipoConvenio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,9 +22,11 @@ public class Paciente {
     private Endereco endereco;
     private Contato contato;
     private TipoConvenio tipoConvenio;
-    private Prontuario prontuario;
+    private DadosAdicionais dadosAdicionais;
+    private List<Prontuario> prontuarios;
+    private int proximoIdProntuario = 1;
 
-    public Paciente(int id, String cpf, String nome, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio, Prontuario prontuario) {
+    public Paciente(int id, String cpf, String nome, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
@@ -30,7 +34,8 @@ public class Paciente {
         this.endereco = endereco;
         this.contato = contato;
         this.tipoConvenio = tipoConvenio;
-        this.prontuario = prontuario;
+        this.dadosAdicionais = new DadosAdicionais();
+        this.prontuarios = new ArrayList<>();
     }
 
     public int getId() {
@@ -89,12 +94,38 @@ public class Paciente {
         this.tipoConvenio = tipoConvenio;
     }
 
-    public Prontuario getProntuario() {
-        return prontuario;
+    public DadosAdicionais getDadosAdicionais() {
+        return dadosAdicionais;
     }
 
-    public void setProntuario(Prontuario prontuario) {
-        this.prontuario = prontuario;
+    public void setDadosAdicionais(DadosAdicionais dadosAdicionais) {
+        this.dadosAdicionais = dadosAdicionais;
+    }
+
+    public List<Prontuario> getHistoricoProntuarios() {
+        return prontuarios;
+    }
+
+    public void adicionarProntuario(Prontuario prontuario) {
+        prontuario.setId(proximoIdProntuario++);
+        this.prontuarios.add(prontuario);
+    }
+
+    public Prontuario buscarProntuarioPorId(int idProntuario) {
+        for (Prontuario p : this.prontuarios) {
+            if (p.getId() == idProntuario) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public boolean removerProntuarioPorId(int idProntuario) {
+        Prontuario p = buscarProntuarioPorId(idProntuario);
+        if (p != null) {
+            return this.prontuarios.remove(p);
+        }
+        return false;
     }
 }
 

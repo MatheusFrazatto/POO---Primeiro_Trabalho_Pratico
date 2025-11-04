@@ -1,77 +1,70 @@
 package modelo;
 
+import java.time.LocalDate;
+
 public class Prontuario {
-    private boolean fuma;
-    private boolean bebe;
-    private boolean colesterol;
-    private boolean diabete;
-    private String doencasCardiacas;
-    private String cirurgias;
-    private String alergias;
 
-    public Prontuario(boolean fuma, boolean bebe, boolean colesterol, boolean diabete, String doencaCardiaca, String cirurgias, String alergias) {
-        this.fuma = fuma;
-        this.bebe = bebe;
-        this.colesterol = colesterol;
-        this.diabete = diabete;
-        this.doencasCardiacas = doencaCardiaca;
-        this.cirurgias = cirurgias;
-        this.alergias = alergias;
+    private int id;
+    private LocalDate data;
+    private String sintomas;
+    private String diagnostico;
+    private String prescricao;
+    private Medico medico;
+
+    public Prontuario(int id, LocalDate data, String sintomas, String diagnostico, String prescricao, Medico medico) {
+        this.id = id;
+        this.data = data;
+        this.sintomas = sintomas;
+        this.diagnostico = diagnostico;
+        this.prescricao = prescricao;
+        this.medico = medico;
     }
 
-    public boolean isFuma() {
-        return fuma;
+    public int getId() {
+        return id;
     }
 
-    public void setFuma(boolean fuma) {
-        this.fuma = fuma;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public boolean isBebe() {
-        return bebe;
+    public LocalDate getData() {
+        return data;
     }
 
-    public void setBebe(boolean bebe) {
-        this.bebe = bebe;
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
-    public boolean isColesterol() {
-        return colesterol;
+    public String getSintomas() {
+        return sintomas;
     }
 
-    public void setColesterol(boolean colesterol) {
-        this.colesterol = colesterol;
+    public void setSintomas(String sintomas) {
+        this.sintomas = sintomas;
     }
 
-    public boolean isDiabete() {
-        return diabete;
+    public String getDiagnostico() {
+        return diagnostico;
     }
 
-    public void setDiabete(boolean diabete) {
-        this.diabete = diabete;
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
     }
 
-    public String getDoencasCardiacas() {
-        return doencasCardiacas;
+    public String getPrescricao() {
+        return prescricao;
     }
 
-    public void setDoencasCardiacas(String doencasCardiacas) {
-        this.doencasCardiacas = doencasCardiacas;
+    public void setPrescricao(String prescricao) {
+        this.prescricao = prescricao;
     }
 
-    public String getCirurgias() {
-        return cirurgias;
+    public Medico getMedico() {
+        return medico;
     }
 
-    public void setCirurgias(String cirurgias) {
-        this.cirurgias = cirurgias;
-    }
-
-    public String getAlergias() {
-        return alergias;
-    }
-
-    public void setAlergias(String alergias) {
-        this.alergias = alergias;
+    public void setMedico(Medico medico) {
+        this.medico = medico;
     }
 }
