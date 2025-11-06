@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class Paciente {
     private int id;
-    private String cpf;
     private String nome;
+    private String cpf;
     private LocalDate dataNascimento;
     private Endereco endereco;
     private Contato contato;
