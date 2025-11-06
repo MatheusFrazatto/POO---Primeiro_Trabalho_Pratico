@@ -7,6 +7,7 @@ import utilitario.TipoConvenio;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.List;
 
 public class SecretariaServico {
@@ -103,7 +104,34 @@ public class SecretariaServico {
         return false;
     }
 
-    public List<Consulta> gerarRelatorioConsultas() {
-        ...
+    public List<Consulta> gerarRelatorioConsultas(String contato) {
+        ListIterator<Consulta> it = this.consultas.listIterator();
+        List<Consulta> relatorio = new ArrayList<>();
+        
+        while (it.hasNext()){
+            Consulta consulta = it.next();
+            Paciente paciente = consulta.getPaciente();
+            Contato contatoPaciente = paciente.getContato();
+            
+            switch (contato) {
+                case "EMAIL":
+                    String email = contatoPaciente.getEmail();
+                    if (email == null || email.equals("")) {
+                        break;
+                    }
+                    
+                    relatorio.add(consulta);
+                    break;
+                case "TELEFONE":
+                    String telefone = contatoPaciente.getTelefone();
+                    if (telefone == null || telefone.equals("")) {
+                        break;
+                    }
+                    
+                    relatorio.add(consulta);
+                    break;
+            }
+        }
+        return relatorio;
     }
 }
