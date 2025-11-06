@@ -1,30 +1,16 @@
 package modelo;
 
-public class Medico {
-    private int id;
-    private String nome;
+public class Medico extends Funcionario {
     private String crm;
+    private String especializacao;
 
-    public Medico(int id, String nome, String crm) {
-        this.id = id;
-        this.nome = nome;
-        this.crm = crm;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public Medico(int id, String nome, String cpf, float salario, String crm, String especializacao) {
+        this.setId(id);
+        this.setNome(nome);
+        this.setCpf(cpf);
+        this.setSalario(salario);
+        this.setCrm(crm);
+        this.setEspecializacao(especializacao);
     }
 
     public String getCrm() {
@@ -33,5 +19,13 @@ public class Medico {
 
     public void setCrm(String crm) {
         this.crm = crm;
+    }
+
+    public String getEspecializacao() {
+        return especializacao;
+    }
+
+    public void setEspecializacao(String especializacao) {
+        this.especializacao = especializacao;
     }
 }
