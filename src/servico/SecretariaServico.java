@@ -11,125 +11,61 @@ import java.util.ListIterator;
 import java.util.List;
 
 public class SecretariaServico {
-    private List<Paciente> pacientes = new ArrayList<>();
-    private List<Medico> medicos = new ArrayList<>();
-    private List<Consulta> consultas = new ArrayList<>();
+    private PacienteServico pacienteServico;
+    private ConsultaServico consultaServico;
 
-    private int proximoIdPaciente = 1;
-    private int proximoIdMedico = 1;
-    private int proximoIdConsulta = 1;
-
-    public SecretariaServico() {
+    public SecretariaServico(PacienteServico pacienteServico, ConsultaServico consultaServico) {
+        this.pacienteServico = pacienteServico;
+        this.consultaServico = consultaServico;
     }
 
-    public Paciente cadastrarPaciente(String cpf, String nome, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
-        DadosAdicionais dadosAdicionais = new DadosAdicionais(false, false, false, false, "", "", "");
-
-        Paciente novoPaciente = new Paciente(
-                proximoIdPaciente++,
-                cpf,
-                nome,
-                dataNascimento,
-                endereco,
-                contato,
-                tipoConvenio
-        );
-
-        this.pacientes.add(novoPaciente);
-
-        return novoPaciente;
+    public Paciente cadastrarPaciente(String nome, String cpf, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
+        return this.pacienteServico.cadastrarPaciente(nome, cpf, dataNascimento, endereco, contato, tipoConvenio);
     }
 
-    public boolean atualizarPaciente(int id, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
-        Paciente paciente = buscarPaciente(id);
-        if (paciente != null) {
-            paciente.setEndereco(endereco);
-            paciente.setContato(contato);
-            paciente.setTipoConvenio(tipoConvenio);
-            return true;
-        }
-        return false;
+    public Boolean atualizarPaciente(int idPaciente, String nome, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
+        return this.pacienteServico.atualizarPaciente(idPaciente, nome, endereco, contato, tipoConvenio);
     }
 
-    public boolean removerPaciente(int id) {
-        Paciente paciente = buscarPaciente(id);
-        if (paciente != null) {
-            this.pacientes.remove(paciente);
-            return true;
-        }
-        return false;
+    public Boolean removerPaciente(int idPaciente) {
+        return this.pacienteServico.removerPaciente(idPaciente);
     }
 
-    public Paciente buscarPaciente(int id) {
-        for (Paciente paciente : pacientes) {
-            if (paciente.getId() == id) {
-                return paciente;
-            }
-        }
-        return null;
+    public Consulta cadastrarConsulta(LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
+        return this.consultaServico.cadastrarConsulta(dataHora, medico, paciente, tipo);
     }
 
-    public Medico buscarMedico(int id) {
-        for (Medico medico : medicos) {
-            if (medico.getId() == id) {
-                return medico;
-            }
-        }
-        return null;
+    public Boolean atualizarConsulta(int idConsulta, LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
+        return this.consultaServico.atualizarConsulta(idConsulta, dataHora, medico, paciente, tipo);
     }
 
-    public Consulta agendarConsulta(LocalDateTime dataHora, int idMedico, int idPaciente, TipoConsulta tipoConsulta) {
-        Paciente paciente = buscarPaciente(idPaciente);
-        Medico medico = buscarMedico(idMedico);
-
-        if (paciente == null || medico == null) {
-            System.out.println("Erro: Paciente ou Médico não encontrado!");
-            return null;
-        }
-
-        Consulta consulta = new Consulta(dataHora, medico, paciente, tipoConsulta);
-        consulta.setId(proximoIdConsulta++);
-        this.consultas.add(consulta);
-
-        return consulta;
+    public Boolean removerConsulta(int idConsulta) {
+        return this.consultaServico.removerConsulta(idConsulta);
     }
 
-    public boolean cancelarConsulta(int id) {
-        for (Consulta consulta : consultas) {
-            if (consulta.getId() == id) {
-                consultas.remove(consulta);
-                return true;
-            }
-        }
-        return false;
-    }
+    public List<Consulta> gerarRelatorioConsultas(LocalDateTime diaDeHoje, String filtroContato) {
+        LocalDateTime diaSeguinte = diaDeHoje.plusDays(1);
+        List<Consulta> listaConsultas = this.consultaServico.getListaConsultas();
+        ListIterator<Consulta> it = listaConsultas.listIterator();
 
-    public List<Consulta> gerarRelatorioConsultas(String contato) {
-        ListIterator<Consulta> it = this.consultas.listIterator();
         List<Consulta> relatorio = new ArrayList<>();
-        
-        while (it.hasNext()){
+        while (it.hasNext()) {
             Consulta consulta = it.next();
-            Paciente paciente = consulta.getPaciente();
-            Contato contatoPaciente = paciente.getContato();
-            
-            switch (contato) {
-                case "EMAIL":
-                    String email = contatoPaciente.getEmail();
-                    if (email == null || email.equals("")) {
+
+            if (consulta.getDataHora().isEqual(diaSeguinte)) {
+                Paciente paciente = consulta.getPaciente();
+                Contato contato = paciente.getContato();
+
+                Boolean temEmail = contato.getEmail() != null && !contato.getEmail().isEmpty();
+                Boolean temTelefone = contato.getTelefone() != null && !contato.getTelefone().isEmpty();
+                switch (filtroContato) {
+                    case "EMAIL":
+                        if (temEmail) relatorio.add(consulta);
                         break;
-                    }
-                    
-                    relatorio.add(consulta);
-                    break;
-                case "TELEFONE":
-                    String telefone = contatoPaciente.getTelefone();
-                    if (telefone == null || telefone.equals("")) {
+                    case "TELEFONE":
+                        if (temTelefone) relatorio.add(consulta);
                         break;
-                    }
-                    
-                    relatorio.add(consulta);
-                    break;
+                }
             }
         }
         return relatorio;
