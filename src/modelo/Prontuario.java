@@ -2,6 +2,9 @@ package modelo;
 
 import java.time.LocalDate;
 
+/**
+ * Um registro de atendimento do paciente (sintomas, diagnóstico).
+ */
 public class Prontuario {
 
     private int id;
@@ -11,6 +14,16 @@ public class Prontuario {
     private String prescricao;
     private Medico medico;
 
+    /**
+     * Cria um novo registro de prontuário.
+     *
+     * @param id O ID (definido pelo Paciente).
+     * @param data A data do atendimento.
+     * @param sintomas Os sintomas.
+     * @param diagnostico O diagnóstico.
+     * @param prescricao A prescrição.
+     * @param medico O médico.
+     */
     public Prontuario(int id, LocalDate data, String sintomas, String diagnostico, String prescricao, Medico medico) {
         this.id = id;
         this.data = data;

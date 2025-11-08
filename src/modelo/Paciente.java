@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
 import utilitario.TipoConvenio;
@@ -11,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author fraza
+ * Guarda todos os dados de um paciente (dados pessoais, prontuários, etc.).
  */
 public class Paciente {
     private int id;
@@ -26,6 +21,17 @@ public class Paciente {
     private List<Prontuario> prontuarios;
     private int proximoIdProntuario = 1;
 
+    /**
+     * Cria um novo paciente.
+     *
+     * @param id O ID.
+     * @param cpf O CPF.
+     * @param nome O nome.
+     * @param dataNascimento A data de nascimento.
+     * @param endereco O endereço.
+     * @param contato O contato.
+     * @param tipoConvenio O tipo de convênio.
+     */
     public Paciente(int id, String cpf, String nome, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
         this.id = id;
         this.cpf = cpf;
@@ -106,11 +112,23 @@ public class Paciente {
         return prontuarios;
     }
 
+    /**
+     * Adiciona um prontuário na lista do paciente.
+     * Define o ID do prontuário automaticamente.
+     *
+     * @param prontuario O prontuário a adicionar.
+     */
     public void adicionarProntuario(Prontuario prontuario) {
         prontuario.setId(proximoIdProntuario++);
         this.prontuarios.add(prontuario);
     }
 
+    /**
+     * Busca um prontuário pelo ID.
+     *
+     * @param idProntuario O ID a buscar.
+     * @return O prontuário, ou null se não achar.
+     */
     public Prontuario buscarProntuarioPorId(int idProntuario) {
         for (Prontuario p : this.prontuarios) {
             if (p.getId() == idProntuario) {
@@ -120,6 +138,12 @@ public class Paciente {
         return null;
     }
 
+    /**
+     * Remove um prontuário pelo ID.
+     *
+     * @param idProntuario O ID a remover.
+     * @return true se conseguiu remover.
+     */
     public boolean removerProntuarioPorId(int idProntuario) {
         Prontuario p = buscarProntuarioPorId(idProntuario);
         if (p != null) {
@@ -128,5 +152,3 @@ public class Paciente {
         return false;
     }
 }
-
-

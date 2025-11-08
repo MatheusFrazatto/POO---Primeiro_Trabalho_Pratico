@@ -3,6 +3,9 @@ package modelo;
 import utilitario.TipoConsulta;
 import java.time.LocalDateTime;
 
+/**
+ * Guarda os dados de uma consulta (médico, paciente, data).
+ */
 public class Consulta {
     private int id;
     private LocalDateTime dataHora;
@@ -10,6 +13,14 @@ public class Consulta {
     private Paciente paciente;
     private TipoConsulta tipo;
 
+    /**
+     * Cria uma nova consulta.
+     *
+     * @param dataHora Data e hora.
+     * @param medico O médico.
+     * @param paciente O paciente.
+     * @param tipo Tipo (NORMAL ou RETORNO).
+     */
     public Consulta(LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
         this.dataHora = dataHora;
         this.medico = medico;

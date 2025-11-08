@@ -1,5 +1,8 @@
 package modelo;
 
+/**
+ * Guarda os dados de um endereço (rua, cidade, etc.).
+ */
 public class Endereco {
     private String rua;
     private String numero;
@@ -8,6 +11,16 @@ public class Endereco {
     private String cidade;
     private String uf;
 
+    /**
+     * Cria um novo endereço.
+     *
+     * @param rua A rua.
+     * @param numero O número.
+     * @param complemento O complemento.
+     * @param bairro O bairro.
+     * @param cidade A cidade.
+     * @param uf A sigla do estado (UF).
+     */
     public Endereco(String rua, String numero, String complemento, String bairro, String cidade, String uf) {
         this.rua = rua;
         this.numero = numero;
@@ -65,9 +78,14 @@ public class Endereco {
         this.uf = uf;
     }
 
+    /**
+     * Formata o endereço para texto.
+     * Ex: "Rua A, 100, Centro, Maringa/PR"
+     *
+     * @return A string do endereço formatado.
+     */
     @Override
     public String toString() {
         return rua + ", " + numero + (complemento.isEmpty() ? "" : " - " + complemento) + ", " + bairro + ", " + cidade + "/" + uf;
     }
 }
-
