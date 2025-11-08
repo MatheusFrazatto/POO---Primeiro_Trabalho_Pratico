@@ -14,6 +14,10 @@ public class SecretariaServico {
     private PacienteServico pacienteServico;
     private ConsultaServico consultaServico;
 
+    public SecretariaServico() {
+    }
+
+
     public SecretariaServico(PacienteServico pacienteServico, ConsultaServico consultaServico) {
         this.pacienteServico = pacienteServico;
         this.consultaServico = consultaServico;
