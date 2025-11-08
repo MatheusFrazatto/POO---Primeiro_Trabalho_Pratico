@@ -1,3 +1,7 @@
+/**
+ * Serviço responsável por gerenciar o envio de mensagens (e-mails e SMS)
+ * para os pacientes sobre suas consultas agendadas.
+ */
 package servico;
 
 import modelo.Consulta;
@@ -9,8 +13,17 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class GerenciadorDeMensagensServico {
+    /**
+     * Construtor padrão para o GerenciadorDeMensagensServico.
+     */
     public GerenciadorDeMensagensServico() {}
 
+    /**
+     * Envia e-mails de lembrete para os pacientes com consultas agendadas para o dia seguinte.
+     * Caso o paciente não possua e-mail cadastrado, uma mensagem de falha é exibida.
+     *
+     * @param listaConsultasDiaSeguinte A lista de consultas agendadas para o dia seguinte.
+     */
     public void enviarEmails(List<Consulta> listaConsultasDiaSeguinte) {
         ListIterator<Consulta> it = listaConsultasDiaSeguinte.listIterator();
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm");
@@ -33,6 +46,12 @@ public class GerenciadorDeMensagensServico {
         }
     }
 
+    /**
+     * Envia mensagens SMS de lembrete para os pacientes com consultas agendadas para o dia seguinte.
+     * Caso o paciente não possua telefone cadastrado, uma mensagem de falha é exibida.
+     *
+     * @param listaConsultasDiaSeguinte A lista de consultas agendadas para o dia seguinte.
+     */
     public void enviarMensagensSMS(List<Consulta> listaConsultasDiaSeguinte) {
         ListIterator<Consulta> it = listaConsultasDiaSeguinte.listIterator();
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm");
