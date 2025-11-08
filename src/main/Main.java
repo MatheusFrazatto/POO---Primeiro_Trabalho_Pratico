@@ -743,7 +743,7 @@ public class Main {
             System.out.println("1. Gerar Receita");
             System.out.println("2. Gerar Atestado");
             System.out.println("3. Gerar Declaração de Acompanhamento");
-            System.out.println("4. (Ainda não implementado: Clientes Atendidos no Mês)");
+            System.out.println("4. Gerar Relatorios de Clientes Atendidos no Mês.");
             System.out.println("0. Voltar ao Menu Médico");
             System.out.print("Escolha a opção: ");
 
@@ -755,7 +755,7 @@ public class Main {
                     case 1: gerarReceita(scanner); break;
                     case 2: gerarAtestado(scanner); break;
                     case 3: gerarDeclaracaoAcompanhamento(scanner); break;
-                    case 4: System.out.println("Função não implementada no serviço MedicoServico."); break;
+                    case 4: gerarRelatorioClientesAtendidos(scanner); break;
                     case 0: break;
                     default: System.out.println("Opção inválida.");
                 }
@@ -844,6 +844,57 @@ public class Main {
         // CORREÇÃO: Passar o OBJETO 'medico'
         String declaracao = medicoServico.gerarDeclaracaoAcompanhamento(idPaciente, medico, 0, nomeAcompanhante);
         System.out.println("\n" + declaracao);
+    }
+
+    // No arquivo: Main.java
+
+    // Implementação de Gerar Relatório de Clientes Atendidos (Médico)
+    private static void gerarRelatorioClientesAtendidos(Scanner scanner) {
+        System.out.println("\n--- RELATÓRIO DE PACIENTES ATENDIDOS ---");
+
+        // 1. Pedir ID do Médico
+        listarMedicos();
+        System.out.print("Digite o ID do médico: ");
+        int idMedico = scanner.nextInt();
+        scanner.nextLine();
+
+        // Validação simples (busca o médico)
+        Medico medico = buscarMedicoNaLista(idMedico);
+        if (medico == null) {
+            System.out.println("Médico não encontrado.");
+            return;
+        }
+
+        // 2. Pedir Mês
+        System.out.print("Digite o Mês (1-12): ");
+        int mes = scanner.nextInt();
+        scanner.nextLine();
+
+        // 3. Pedir Ano
+        System.out.print("Digite o Ano (Ex: 2025): ");
+        int ano = scanner.nextInt();
+        scanner.nextLine();
+
+        // 4. Buscar a lista de consultas
+        List<Consulta> todasConsultas = consultaServico.getListaConsultas();
+
+        // 5. Chamar o serviço
+        List<Paciente> pacientes = medicoServico.getClientesAtendidosMes(idMedico, mes, ano, todasConsultas);
+
+        // 6. Exibir resultados
+        if (pacientes.isEmpty()) {
+            System.out.printf("Nenhum paciente único atendido por %s no Mês/Ano: %d/%d%n",
+                    medico.getNome(), mes, ano);
+            return;
+        }
+
+        System.out.printf("--- PACIENTES ATENDIDOS POR %s (Mês/Ano: %d/%d) ---%n",
+                medico.getNome(), mes, ano);
+
+        for (Paciente p : pacientes) {
+            System.out.printf("ID: %d | Nome: %s | CPF: %s%n",
+                    p.getId(), p.getNome(), p.getCpf());
+        }
     }
 
     // =========================================================

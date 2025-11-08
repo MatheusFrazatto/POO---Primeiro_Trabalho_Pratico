@@ -26,7 +26,7 @@ public class Paciente {
     private List<Prontuario> prontuarios;
     private int proximoIdProntuario = 1;
 
-    public Paciente(int id, String cpf, String nome, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
+    public Paciente(int id, String nome, String cpf, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;

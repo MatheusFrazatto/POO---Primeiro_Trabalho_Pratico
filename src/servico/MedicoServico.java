@@ -102,14 +102,27 @@ public class MedicoServico {
             return "ERRO: Paciente não encontrado";
         }
         return String.format("--- Atestado Médico---\n" +
-                        "Declaro para os devido fins que o(a) Sr(a) %s, esteve nesta unidade hospitalar no dia %d, acompanhando o(a) paciente %s.\n\n" +
+                        "Declaro para os devido fins que o(a) Sr(a) %s, esteve nesta unidade hospitalar no dia %s, acompanhando o(a) paciente %s.\n\n" +
                         "Data: %s\n" +
                         "Ass: %s (CRM: %s)",
                 nomeAcompanhante, LocalDate.now(), paciente.getNome(), LocalDate.now(), medico.getNome(), medico.getCrm());
     }
 
     public List<Paciente> getClientesAtendidosMes(int idMedico, int mes, int ano, List<Consulta> todasConsultas) {
-        return new ArrayList<>();
+        List<Paciente> pacientesAtendidos = new ArrayList<>(); // Lista para o resultado
+        for (Consulta consulta : todasConsultas) {
+            if (consulta.getDataHora().getYear() == ano) {
+                if (consulta.getDataHora().getMonthValue() == mes) {
+                    if (consulta.getMedico().getId() == idMedico) {
+                        Paciente paciente = consulta.getPaciente();
+                        if (!pacientesAtendidos.contains(paciente)) {
+                            pacientesAtendidos.add(paciente);
+                        }
+                    }
+                }
+            }
+        }
+        return pacientesAtendidos;
     }
 
 

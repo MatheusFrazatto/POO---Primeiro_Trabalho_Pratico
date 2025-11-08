@@ -47,8 +47,14 @@ public class SecretariaServico {
         return this.consultaServico.removerConsulta(idConsulta);
     }
 
+    // No arquivo: SecretariaServico.java
+
     public List<Consulta> gerarRelatorioConsultas(LocalDateTime diaDeHoje, String filtroContato) {
-        LocalDateTime diaSeguinte = diaDeHoje.plusDays(1);
+
+        // CORREÇÃO (Esta é a linha da Imagem 1):
+        // Nós queremos APENAS A DATA do dia seguinte.
+        LocalDate dataDiaSeguinte = diaDeHoje.toLocalDate().plusDays(1);
+
         List<Consulta> listaConsultas = this.consultaServico.getListaConsultas();
         ListIterator<Consulta> it = listaConsultas.listIterator();
 
@@ -56,7 +62,11 @@ public class SecretariaServico {
         while (it.hasNext()) {
             Consulta consulta = it.next();
 
-            if (consulta.getDataHora().isEqual(diaSeguinte)) {
+            // Pegamos APENAS A DATA da consulta
+            LocalDate dataDaConsulta = consulta.getDataHora().toLocalDate();
+
+            // Comparamos se as DATAS são iguais (ignora as horas)
+            if (dataDaConsulta.isEqual(dataDiaSeguinte)) {
                 Paciente paciente = consulta.getPaciente();
                 Contato contato = paciente.getContato();
 
