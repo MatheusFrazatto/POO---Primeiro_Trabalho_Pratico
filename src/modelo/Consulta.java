@@ -4,7 +4,9 @@ import utilitario.TipoConsulta;
 import java.time.LocalDateTime;
 
 /**
- * Guarda os dados de uma consulta (médico, paciente, data).
+ * Representa o agendamento de uma Consulta na clínica.
+ * Esta classe é central para o sistema, pois armazena a relação entre
+ * um {@link Paciente}, um {@link Medico} e a data/hora em que o atendimento ocorrerá.
  */
 public class Consulta {
     private int id;
@@ -14,12 +16,12 @@ public class Consulta {
     private TipoConsulta tipo;
 
     /**
-     * Cria uma nova consulta.
+     * Construtor principal para criar uma nova instância de Consulta.
      *
-     * @param dataHora Data e hora.
-     * @param medico O médico.
-     * @param paciente O paciente.
-     * @param tipo Tipo (NORMAL ou RETORNO).
+     * @param dataHora Data e hora exatas do agendamento.
+     * @param medico O objeto Medico que realizará o atendimento.
+     * @param paciente O objeto Paciente que será atendido.
+     * @param tipo O tipo da consulta (definido pelo enum TipoConsulta, ex: NORMAL ou RETORNO).
      */
     public Consulta(LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
         this.dataHora = dataHora;

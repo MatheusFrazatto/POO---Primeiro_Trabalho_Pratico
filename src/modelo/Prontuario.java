@@ -3,7 +3,12 @@ package modelo;
 import java.time.LocalDate;
 
 /**
- * Um registro de atendimento do paciente (sintomas, diagnóstico).
+ * Representa um registro clínico de um atendimento (uma entrada no prontuário).
+ * Cada instância desta classe documenta uma consulta específica,
+ * detalhando os sintomas relatados, o diagnóstico do médico e a
+ * prescrição.
+ *
+ * Cada Prontuario é associado a um {@link Paciente} e a um {@link Medico} (que o criou).
  */
 public class Prontuario {
 
@@ -17,12 +22,12 @@ public class Prontuario {
     /**
      * Cria um novo registro de prontuário.
      *
-     * @param id O ID (definido pelo Paciente).
-     * @param data A data do atendimento.
-     * @param sintomas Os sintomas.
-     * @param diagnostico O diagnóstico.
-     * @param prescricao A prescrição.
-     * @param medico O médico.
+     * @param id O ID deste registro (geralmente 0, para ser definido pelo {@link Paciente}).
+     * @param data A data em que o atendimento foi realizado.
+     * @param sintomas Descrição dos sintomas apresentados pelo paciente.
+     * @param diagnostico O diagnóstico firmado pelo médico.
+     * @param prescricao O tratamento, medicamentos ou recomendações prescritas.
+     * @param medico O objeto Medico que realizou este atendimento.
      */
     public Prontuario(int id, LocalDate data, String sintomas, String diagnostico, String prescricao, Medico medico) {
         this.id = id;

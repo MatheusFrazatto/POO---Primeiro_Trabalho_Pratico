@@ -1,7 +1,9 @@
 package modelo;
 
 /**
- * Guarda os dados de um endereço (rua, cidade, etc.).
+ * Representa um endereço postal completo.
+ * Esta classe é utilizada para armazenar os dados de localização de
+ * entidades, como {@link Paciente}.
  */
 public class Endereco {
     private String rua;
@@ -12,11 +14,11 @@ public class Endereco {
     private String uf;
 
     /**
-     * Cria um novo endereço.
+     * Cria uma nova instância de Endereco.
      *
      * @param rua A rua.
      * @param numero O número.
-     * @param complemento O complemento.
+     * @param complemento O complemento (ex: "Apto 101"). Pode ser vazio.
      * @param bairro O bairro.
      * @param cidade A cidade.
      * @param uf A sigla do estado (UF).
@@ -79,8 +81,9 @@ public class Endereco {
     }
 
     /**
-     * Formata o endereço para texto.
-     * Ex: "Rua A, 100, Centro, Maringa/PR"
+     * Formata o endereço em uma única String legível.
+     * Exemplo: "Rua A, 100 - Apto 101, Centro, Maringa/PR"
+     * O complemento só é incluído se não estiver vazio.
      *
      * @return A string do endereço formatado.
      */

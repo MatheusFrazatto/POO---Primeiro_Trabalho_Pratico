@@ -1,8 +1,9 @@
 package modelo;
 
 /**
- * Classe base para todos os funcionários (Médico, Secretária).
- * Guarda dados comuns (ID, nome, CPF, salário).
+ * Classe abstrata base que define os atributos e comportamentos comuns
+ * a todos os funcionários da clínica.
+
  */
 public abstract class Funcionario {
     private int id;

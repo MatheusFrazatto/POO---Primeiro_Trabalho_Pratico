@@ -1,7 +1,11 @@
 package modelo;
 
 /**
- * Guarda o histórico de saúde do paciente (fuma, bebe, etc.).
+ * Armazena o histórico de saúde e hábitos de vida do {@link Paciente} (Anamnese).
+ * Esta classe é preenchida e gerenciada pelo {@link Medico} e contém informações
+ * cruciais para o diagnóstico e tratamento, como histórico de tabagismo,
+ * consumo de álcool, condições crônicas (diabetes, colesterol),
+ * cirurgias prévias e alergias.
  */
 public class DadosAdicionais {
     private boolean fuma;
@@ -13,13 +17,16 @@ public class DadosAdicionais {
     private String alergias;
 
     /**
-     * Cria um histórico de saúde vazio.
+     * Construtor padrão.
+     * Cria uma instância de DadosAdicionais vazia (com todos os campos
+     * booleanos como {@code false} e Strings como {@code null}),
+     * pronta para ser preenchida, geralmente na criação de um novo Paciente.
      */
     public DadosAdicionais() {
     }
 
     /**
-     * Cria um histórico de saúde com dados.
+     * Construtor completo para criar um histórico de saúde com dados predefinidos.
      *
      * @param fuma Se fuma.
      * @param bebe Se bebe.

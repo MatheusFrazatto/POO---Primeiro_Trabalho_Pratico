@@ -1,14 +1,18 @@
 package modelo;
 
 /**
- * Representa uma Secretária. Herda de Funcionário.
+ * Representa a entidade Secretária (ou secretário) no sistema.
+ * Esta classe herda de {@link Funcionario} e representa um usuário
+ * com permissões administrativas, como agendamento de consultas
+ * e gerenciamento de pacientes.
+ *
  */
 public class Secretaria extends Funcionario {
     /**
-     * Cria uma nova secretária.
+     * Construtor para criar um novo objeto Secretaria.
      *
-     * @param id O ID.
-     * @param nome O nome.
+     * @param id O ID único do funcionário.
+     * @param nome O nome completo.
      * @param cpf O CPF.
      * @param salario O salário.
      */

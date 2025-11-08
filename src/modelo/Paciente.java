@@ -20,7 +20,6 @@ public class Paciente {
     private DadosAdicionais dadosAdicionais;
     private List<Prontuario> prontuarios;
     private int proximoIdProntuario = 1;
-
     /**
      * Cria um novo paciente.
      *

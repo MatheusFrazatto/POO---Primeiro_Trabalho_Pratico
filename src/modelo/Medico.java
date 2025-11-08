@@ -1,22 +1,25 @@
 package modelo;
 
 /**
- * Representa um Médico. Herda de Funcionário.
- * Adiciona CRM e especialização.
+ * Representa a entidade Médico dentro do sistema.
+ * Esta classe herda de {@link Funcionario}, aproveitando os campos
+ * comuns (ID, nome, CPF, salário), e adiciona atributos específicos
+ * da profissão médica: o CRM e sua 
+ * especialização.
  */
 public class Medico extends Funcionario {
     private String crm;
     private String especializacao;
 
     /**
-     * Cria um novo médico.
+     * Construtor para criar um novo objeto Medico.
      *
-     * @param id O ID.
-     * @param nome O nome.
-     * @param cpf O CPF.
-     * @param salario O salário.
-     * @param crm O CRM.
-     * @param especializacao A especialização.
+     * @param id O ID único do funcionário.
+     * @param nome O nome completo do médico.
+     * @param cpf O CPF do médico.
+     * @param salario O salário do médico.
+     * @param crm O registro no Conselho Regional de Medicina (ex: "CRM/PR 12345").
+     * @param especializacao A área de especialização (ex: "Dermatologia").
      */
     public Medico(int id, String nome, String cpf, float salario, String crm, String especializacao) {
         this.setId(id);
