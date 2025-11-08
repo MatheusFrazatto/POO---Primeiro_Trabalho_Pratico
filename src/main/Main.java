@@ -1,6 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+/**
+ * Classe principal do sistema que contém o método main para iniciar a aplicação.
+ * Responsável pela inicialização dos serviços, carregamento de dados mock
+ * e pela interface de menu interativo para simular os acessos de Secretária e Médico.
  */
 package main;
 
@@ -33,6 +34,10 @@ public class Main {
     private static List<Medico> medicosDaClinica = new ArrayList<>();
 
 
+    /**
+     * Inicializa dados mock (pacientes, médicos e consultas) para facilitar os testes
+     * e o uso da aplicação no ambiente de console.
+     */
     // Dados Mock para facilitar o teste
     private static void inicializarDados() {
         // Inicializa Pacientes (em PacienteServico para ser compartilhado)
@@ -66,6 +71,12 @@ public class Main {
         System.out.println("--- Dados iniciais (2 Pacientes, 2 Médicos e 3 Consultas) carregados. ---");
     }
 
+    /**
+     * O ponto de entrada da aplicação.
+     * Inicializa os dados e exibe o menu principal para a interação do usuário.
+     *
+     * @param args Argumentos de linha de comando (não utilizados).
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         inicializarDados();
@@ -105,10 +116,14 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * Exibe o menu de opções para o perfil de Secretária.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // =========================================================
     // MENU SECRETÁRIA
     // =========================================================
-
     private static void menuSecretaria(Scanner scanner) {
         int opcao = -1;
         do {
@@ -147,6 +162,11 @@ public class Main {
         } while (opcao != 0);
     }
 
+    /**
+     * Exibe o sub-menu de gerenciamento de pacientes (Secretária).
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Sub-Menu de Pacientes
     private static void menuGerenciarPacientes(Scanner scanner) {
         int opcao = -1;
@@ -179,6 +199,11 @@ public class Main {
         } while (opcao != 0);
     }
 
+    /**
+     * Solicita os dados e cadastra um novo paciente através do SecretariaServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Cadastro de Paciente
     private static void cadastrarPaciente(Scanner scanner) {
         System.out.println("\n--- CADASTRO DE PACIENTE ---");
@@ -221,6 +246,11 @@ public class Main {
         System.out.println("Paciente cadastrado com sucesso! ID: " + novoPaciente.getId());
     }
 
+    /**
+     * Solicita o ID e os novos dados para atualizar um paciente através do SecretariaServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Atualizar Paciente (Secretaria)
     private static void atualizarPaciente(Scanner scanner) {
         listarPacientes();
@@ -273,6 +303,11 @@ public class Main {
         }
     }
 
+    /**
+     * Solicita o ID do paciente a ser removido e realiza a remoção através do SecretariaServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Remover Paciente
     private static void removerPaciente(Scanner scanner) {
         listarPacientes();
@@ -288,6 +323,9 @@ public class Main {
         }
     }
 
+    /**
+     * Lista todos os pacientes cadastrados no PacienteServico.
+     */
     // Implementação de Listar Pacientes
     private static void listarPacientes() {
         System.out.println("\n--- LISTA DE PACIENTES ---");
@@ -303,6 +341,11 @@ public class Main {
         }
     }
 
+    /**
+     * Exibe o sub-menu de gerenciamento de consultas (Secretária).
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Sub-Menu de Consultas
     private static void menuGerenciarConsultas(Scanner scanner) {
         int opcao = -1;
@@ -333,6 +376,12 @@ public class Main {
         } while (opcao != 0);
     }
 
+    /**
+     * Solicita os dados (Paciente, Médico, Data/Hora) e agenda uma nova consulta
+     * através do SecretariaServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Agendar Consulta
     private static void agendarConsulta(Scanner scanner) {
         System.out.println("\n--- AGENDAR CONSULTA ---");
@@ -377,6 +426,11 @@ public class Main {
         }
     }
 
+    /**
+     * Solicita o ID e remove/cancela uma consulta através do SecretariaServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Cancelar Consulta
     private static void cancelarConsulta(Scanner scanner) {
         listarConsultas();
@@ -392,6 +446,9 @@ public class Main {
         }
     }
 
+    /**
+     * Lista todas as consultas agendadas no ConsultaServico.
+     */
     // Implementação de Listar Consultas
     private static void listarConsultas() {
         System.out.println("\n--- LISTA DE CONSULTAS ---");
@@ -407,6 +464,12 @@ public class Main {
         }
     }
 
+    /**
+     * Gera e exibe o relatório de consultas para o dia seguinte, com filtro por tipo de contato,
+     * utilizando o SecretariaServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Gerar Relatório de Consultas do Dia Seguinte (Secretaria)
     private static void gerarRelatorioConsultasSecretaria(Scanner scanner) {
         System.out.println("\n--- RELATÓRIO DE CONSULTAS DO DIA SEGUINTE ---");
@@ -442,10 +505,14 @@ public class Main {
         System.out.println("Relatório de confirmação e simulação de envio de mensagem concluídos.");
     }
 
+    /**
+     * Exibe o menu de opções para o perfil de Médico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // =========================================================
     // MENU MÉDICO
     // =========================================================
-
     private static void menuMedico(Scanner scanner) {
         int opcao = -1;
         do {
@@ -484,6 +551,11 @@ public class Main {
         } while (opcao != 0);
     }
 
+    /**
+     * Exibe o sub-menu de gerenciamento de dados adicionais (Médico).
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Sub-Menu de Dados Adicionais
     private static void menuGerenciarDadosAdicionais(Scanner scanner) {
         int opcao = -1;
@@ -514,6 +586,11 @@ public class Main {
         } while (opcao != 0);
     }
 
+    /**
+     * Solicita os dados de saúde e atualiza os Dados Adicionais do paciente através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Atualizar Dados Adicionais (Médico)
     private static void atualizarDadosAdicionais(Scanner scanner) {
         listarPacientes();
@@ -545,6 +622,11 @@ public class Main {
         }
     }
 
+    /**
+     * Limpa/reseta os Dados Adicionais de um paciente através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Limpar Dados Adicionais (Médico)
     private static void limparDadosAdicionais(Scanner scanner) {
         listarPacientes();
@@ -559,6 +641,11 @@ public class Main {
         }
     }
 
+    /**
+     * Visualiza e exibe os Dados Adicionais de um paciente específico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Visualizar Dados Adicionais (Médico)
     private static void visualizarDadosAdicionais(Scanner scanner) {
         listarPacientes();
@@ -583,6 +670,11 @@ public class Main {
         System.out.println("Alergias: " + da.getAlergias());
     }
 
+    /**
+     * Exibe o sub-menu de gerenciamento de prontuários (Médico).
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Sub-Menu de Prontuário
     private static void menuGerenciarProntuario(Scanner scanner) {
         int opcao = -1;
@@ -615,6 +707,11 @@ public class Main {
         } while (opcao != 0);
     }
 
+    /**
+     * Solicita os dados e cadastra um novo prontuário para o paciente através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Cadastrar Prontuário (Médico)
     private static void cadastrarProntuario(Scanner scanner) {
         listarPacientes();
@@ -649,6 +746,11 @@ public class Main {
         }
     }
 
+    /**
+     * Solicita o ID do prontuário e os novos dados para atualização através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Atualizar Prontuário (Médico)
     private static void atualizarProntuario(Scanner scanner) {
         listarPacientes();
@@ -678,6 +780,11 @@ public class Main {
         }
     }
 
+    /**
+     * Solicita o ID do prontuário a ser removido e realiza a remoção através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Remover Prontuário (Médico)
     private static void removerProntuario(Scanner scanner) {
         listarPacientes();
@@ -699,6 +806,13 @@ public class Main {
         }
     }
 
+    /**
+     * Visualiza e exibe o histórico completo de prontuários de um paciente específico.
+     * Sobrecarga interna.
+     *
+     * @param idPaciente O ID do paciente.
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Visualizar Histórico de Prontuários (Médico)
     // Sobrecarga para ser chamada internamente sem pedir o ID de novo
     private static void visualizarHistoricoProntuarios(int idPaciente, Scanner scanner) {
@@ -725,6 +839,11 @@ public class Main {
         }
     }
 
+    /**
+     * Visualiza e exibe o histórico completo de prontuários de um paciente (chamado pelo menu).
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Método original para ser chamado pelo menu
     private static void visualizarHistoricoProntuarios(Scanner scanner) {
         listarPacientes();
@@ -735,6 +854,11 @@ public class Main {
     }
 
 
+    /**
+     * Exibe o sub-menu de geração de relatórios médicos.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Sub-Menu de Relatórios Médicos
     private static void menuGerarRelatoriosMedicos(Scanner scanner) {
         int opcao = -1;
@@ -767,6 +891,11 @@ public class Main {
         } while (opcao != 0);
     }
 
+    /**
+     * Solicita a prescrição e gera uma receita médica formatada através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Gerar Receita (Médico)
     private static void gerarReceita(Scanner scanner) {
         listarPacientes();
@@ -793,6 +922,11 @@ public class Main {
         System.out.println("\n" + receita);
     }
 
+    /**
+     * Solicita os dias de afastamento e gera um atestado médico formatado através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Gerar Atestado (Médico)
     private static void gerarAtestado(Scanner scanner) {
         listarPacientes();
@@ -820,6 +954,11 @@ public class Main {
         System.out.println("\n" + atestado);
     }
 
+    /**
+     * Solicita o nome do acompanhante e gera uma declaração de acompanhamento através do MedicoServico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Gerar Declaração de Acompanhamento (Médico)
     private static void gerarDeclaracaoAcompanhamento(Scanner scanner) {
         listarPacientes();
@@ -848,6 +987,11 @@ public class Main {
 
     // No arquivo: Main.java
 
+    /**
+     * Gera o relatório de clientes atendidos por um médico em um mês/ano específico.
+     *
+     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     */
     // Implementação de Gerar Relatório de Clientes Atendidos (Médico)
     private static void gerarRelatorioClientesAtendidos(Scanner scanner) {
         System.out.println("\n--- RELATÓRIO DE PACIENTES ATENDIDOS ---");
