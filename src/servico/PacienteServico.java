@@ -1,7 +1,3 @@
-/**
- * Serviço responsável por gerenciar as operações relacionadas a Pacientes.
- * Inclui métodos para cadastrar, atualizar, remover e buscar pacientes.
- */
 package servico;
 
 import modelo.*;
@@ -11,6 +7,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serviço responsável por gerenciar as operações relacionadas a Pacientes.
+ * Inclui métodos para cadastrar, atualizar, remover e buscar pacientes.
+ */
 public class PacienteServico {
     private List<Paciente> listaPacientes = new ArrayList<>();
     private int proximoIdPaciente = 1;
@@ -25,12 +25,12 @@ public class PacienteServico {
      * Cadastra um novo paciente no sistema.
      * Atribui um ID único ao novo paciente.
      *
-     * @param nome O nome completo do paciente.
-     * @param cpf O CPF do paciente.
+     * @param nome           O nome completo do paciente.
+     * @param cpf            O CPF do paciente.
      * @param dataNascimento A data de nascimento do paciente.
-     * @param endereco O endereço do paciente.
-     * @param contato As informações de contato do paciente.
-     * @param tipoConvenio O tipo de convênio (plano de saúde ou particular).
+     * @param endereco       O endereço do paciente.
+     * @param contato        As informações de contato do paciente.
+     * @param tipoConvenio   O tipo de convênio (plano de saúde ou particular).
      * @return O objeto Paciente recém-cadastrado.
      */
     public Paciente cadastrarPaciente(String nome, String cpf, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
@@ -43,10 +43,10 @@ public class PacienteServico {
     /**
      * Atualiza os dados cadastrais de um paciente existente (exceto CPF e Data de Nascimento).
      *
-     * @param id O ID do paciente a ser atualizado.
-     * @param nome O novo nome.
-     * @param endereco O novo endereço.
-     * @param contato As novas informações de contato.
+     * @param id           O ID do paciente a ser atualizado.
+     * @param nome         O novo nome.
+     * @param endereco     O novo endereço.
+     * @param contato      As novas informações de contato.
      * @param tipoConvenio O novo tipo de convênio.
      * @return {@code true} se o paciente foi encontrado e atualizado, {@code false} caso contrário.
      */

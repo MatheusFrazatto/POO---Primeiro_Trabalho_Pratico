@@ -16,12 +16,12 @@ public class Endereco {
     /**
      * Cria uma nova instância de Endereco.
      *
-     * @param rua A rua.
-     * @param numero O número.
+     * @param rua         A rua.
+     * @param numero      O número.
      * @param complemento O complemento (ex: "Apto 101"). Pode ser vazio.
-     * @param bairro O bairro.
-     * @param cidade A cidade.
-     * @param uf A sigla do estado (UF).
+     * @param bairro      O bairro.
+     * @param cidade      A cidade.
+     * @param uf          A sigla do estado (UF).
      */
     public Endereco(String rua, String numero, String complemento, String bairro, String cidade, String uf) {
         this.rua = rua;
@@ -89,6 +89,7 @@ public class Endereco {
      */
     @Override
     public String toString() {
+        boolean temComplemento = complemento != null && !complemento.isEmpty();
         return rua + ", " + numero + (complemento.isEmpty() ? "" : " - " + complemento) + ", " + bairro + ", " + cidade + "/" + uf;
     }
 }

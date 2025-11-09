@@ -1,7 +1,3 @@
-/**
- * Serviço responsável por gerenciar as operações de uma Secretária no sistema, agindo como uma fachada
- * para as funcionalidades de PacienteServico e ConsultaServico, além de gerar relatórios de consultas.
- */
 package servico;
 
 import modelo.*;
@@ -14,16 +10,13 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.List;
 
+/**
+ * Serviço responsável por gerenciar as operações de uma Secretária no sistema, agindo como uma fachada
+ * para as funcionalidades de PacienteServico e ConsultaServico, além de gerar relatórios de consultas.
+ */
 public class SecretariaServico {
     private PacienteServico pacienteServico;
     private ConsultaServico consultaServico;
-
-    /**
-     * Construtor padrão para o SecretariaServico.
-     * Deve-se usar o construtor parametrizado para injetar as dependências.
-     */
-    public SecretariaServico() {
-    }
 
     /**
      * Construtor para o SecretariaServico que recebe as dependências.
@@ -39,12 +32,12 @@ public class SecretariaServico {
     /**
      * Delega o cadastro de um novo paciente para o PacienteServico.
      *
-     * @param nome O nome completo do paciente.
-     * @param cpf O CPF do paciente.
+     * @param nome           O nome completo do paciente.
+     * @param cpf            O CPF do paciente.
      * @param dataNascimento A data de nascimento do paciente.
-     * @param endereco O endereço do paciente.
-     * @param contato As informações de contato do paciente.
-     * @param tipoConvenio O tipo de convênio (plano de saúde ou particular).
+     * @param endereco       O endereço do paciente.
+     * @param contato        As informações de contato do paciente.
+     * @param tipoConvenio   O tipo de convênio (plano de saúde ou particular).
      * @return O objeto Paciente recém-cadastrado.
      */
     public Paciente cadastrarPaciente(String nome, String cpf, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
@@ -54,10 +47,10 @@ public class SecretariaServico {
     /**
      * Delega a atualização de um paciente para o PacienteServico.
      *
-     * @param idPaciente O ID do paciente a ser atualizado.
-     * @param nome O novo nome.
-     * @param endereco O novo endereço.
-     * @param contato As novas informações de contato.
+     * @param idPaciente   O ID do paciente a ser atualizado.
+     * @param nome         O novo nome.
+     * @param endereco     O novo endereço.
+     * @param contato      As novas informações de contato.
      * @param tipoConvenio O novo tipo de convênio.
      * @return {@code true} se o paciente foi encontrado e atualizado, {@code false} caso contrário.
      */
@@ -79,9 +72,9 @@ public class SecretariaServico {
      * Delega o cadastro de uma nova consulta para o ConsultaServico.
      *
      * @param dataHora A data e hora da consulta.
-     * @param medico O médico.
+     * @param medico   O médico.
      * @param paciente O paciente.
-     * @param tipo O tipo de consulta.
+     * @param tipo     O tipo de consulta.
      * @return O objeto Consulta recém-cadastrado.
      */
     public Consulta cadastrarConsulta(LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
@@ -92,10 +85,10 @@ public class SecretariaServico {
      * Delega a atualização de uma consulta para o ConsultaServico.
      *
      * @param idConsulta O ID da consulta a ser atualizada.
-     * @param dataHora A nova data e hora.
-     * @param medico O novo médico.
-     * @param paciente O novo paciente.
-     * @param tipo O novo tipo de consulta.
+     * @param dataHora   A nova data e hora.
+     * @param medico     O novo médico.
+     * @param paciente   O novo paciente.
+     * @param tipo       O novo tipo de consulta.
      * @return {@code true} se a consulta foi encontrada e atualizada, {@code false} caso contrário.
      */
     public Boolean atualizarConsulta(int idConsulta, LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
@@ -112,20 +105,15 @@ public class SecretariaServico {
         return this.consultaServico.removerConsulta(idConsulta);
     }
 
-    // No arquivo: SecretariaServico.java
-
     /**
      * Gera um relatório de consultas agendadas para o dia seguinte (diaDeHoje + 1),
      * filtrando pelos pacientes que possuem o tipo de contato especificado (EMAIL ou TELEFONE).
      *
-     * @param diaDeHoje A data e hora de referência para calcular o dia seguinte.
+     * @param diaDeHoje     A data e hora de referência para calcular o dia seguinte.
      * @param filtroContato O tipo de contato a ser filtrado ("EMAIL" ou "TELEFONE").
      * @return Uma lista de objetos Consulta que atendem ao critério de data e filtro de contato.
      */
     public List<Consulta> gerarRelatorioConsultas(LocalDateTime diaDeHoje, String filtroContato) {
-
-        // CORREÇÃO (Esta é a linha da Imagem 1):
-        // Nós queremos APENAS A DATA do dia seguinte.
         LocalDate dataDiaSeguinte = diaDeHoje.toLocalDate().plusDays(1);
 
         List<Consulta> listaConsultas = this.consultaServico.getListaConsultas();
@@ -135,10 +123,8 @@ public class SecretariaServico {
         while (it.hasNext()) {
             Consulta consulta = it.next();
 
-            // Pegamos APENAS A DATA da consulta
             LocalDate dataDaConsulta = consulta.getDataHora().toLocalDate();
 
-            // Comparamos se as DATAS são iguais (ignora as horas)
             if (dataDaConsulta.isEqual(dataDiaSeguinte)) {
                 Paciente paciente = consulta.getPaciente();
                 Contato contato = paciente.getContato();

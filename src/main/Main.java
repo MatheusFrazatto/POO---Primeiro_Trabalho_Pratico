@@ -1,14 +1,4 @@
-/**
- * Classe principal do sistema que contém o método main para iniciar a aplicação.
- * Responsável pela inicialização dos serviços, carregamento de dados mock
- * e pela interface de menu interativo para simular os acessos de Secretária e Médico.
- */
 package main;
-
-/**
- *
- * @author fraza
- */
 
 import modelo.*;
 import servico.*;
@@ -16,21 +6,23 @@ import utilitario.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList; // Importar ArrayList
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe principal do sistema que contém o método main para iniciar a aplicação.
+ * Responsável pela inicialização dos serviços, carregamento de dados mock
+ * e pela interface de menu interativo para simular os acessos de Secretária e Médico.
+ */
 public class Main {
-
     private static PacienteServico pacienteServico = new PacienteServico();
     private static MedicoServico medicoServico = new MedicoServico(pacienteServico);
     private static ConsultaServico consultaServico = new ConsultaServico();
-    // CORREÇÃO: Inicializar o SecretariaServico com os outros serviços, conforme o construtor
     private static SecretariaServico secretariaServico = new SecretariaServico(pacienteServico, consultaServico);
     private static GerenciadorDeMensagensServico gerenciadorDeMensagensServico = new GerenciadorDeMensagensServico();
 
-    // NOVO: Lista de médicos mantida na Main, conforme solicitado
     private static List<Medico> medicosDaClinica = new ArrayList<>();
 
 
@@ -38,33 +30,24 @@ public class Main {
      * Inicializa dados mock (pacientes, médicos e consultas) para facilitar os testes
      * e o uso da aplicação no ambiente de console.
      */
-    // Dados Mock para facilitar o teste
     private static void inicializarDados() {
-        // Inicializa Pacientes (em PacienteServico para ser compartilhado)
         Endereco end1 = new Endereco("Rua A", "100", "", "Centro", "Maringa", "PR");
         Contato cont1 = new Contato("44998765432", "joao.silva@email.com");
         pacienteServico.cadastrarPaciente("João Silva", "12345678900", LocalDate.of(1990, 5, 15), end1, cont1, TipoConvenio.PLANO_SAUDE);
 
         Endereco end2 = new Endereco("Av. Brasil", "50", "Apto 101", "Zona 7", "Maringa", "PR");
-        Contato cont2 = new Contato("44991234567", ""); // Sem email para teste de relatório
+        Contato cont2 = new Contato("44991234567", "");
         pacienteServico.cadastrarPaciente("Maria Oliveira", "09876543211", LocalDate.of(1985, 10, 20), end2, cont2, TipoConvenio.PARTICULAR);
 
-        // Adicionar Médicos
         Medico medico1 = new Medico(1, "Dr. Pedro Santos", "11122233344", 8000.0f, "CRM/PR 12345", "Cardiologia");
         Medico medico2 = new Medico(2, "Dra. Ana Costa", "55566677788", 9500.0f, "CRM/PR 67890", "Dermatologia");
 
-        // CORREÇÃO: Adicionar médicos à lista local da Main
         medicosDaClinica.add(medico1);
         medicosDaClinica.add(medico2);
 
-        // REMOÇÃO: A "Gambiarra" de Reflection foi removida pois era desnecessária e incompatível.
-
-        // Adicionar consultas (para testar relatórios)
-        // Consulta para hoje
         consultaServico.cadastrarConsulta(LocalDateTime.now().plusHours(1), medico1, pacienteServico.buscarPacientePorId(1), TipoConsulta.NORMAL);
 
-        // Consulta para o dia seguinte (para teste de relatório)
-        LocalDateTime amanha = LocalDate.now().plusDays(1).atStartOfDay(); // Data base para teste
+        LocalDateTime amanha = LocalDate.now().plusDays(1).atStartOfDay();
         consultaServico.cadastrarConsulta(amanha.withHour(9).withMinute(0), medico2, pacienteServico.buscarPacientePorId(2), TipoConsulta.RETORNO);
         consultaServico.cadastrarConsulta(amanha.withHour(10).withMinute(0), medico1, pacienteServico.buscarPacientePorId(1), TipoConsulta.NORMAL);
 
@@ -91,7 +74,7 @@ public class Main {
 
             try {
                 opcao = scanner.nextInt();
-                scanner.nextLine(); // Consumir nova linha
+                scanner.nextLine();
 
                 switch (opcao) {
                     case 1:
@@ -108,7 +91,7 @@ public class Main {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número.");
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine();
                 opcao = -1;
             }
         } while (opcao != 0);
@@ -121,15 +104,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // =========================================================
-    // MENU SECRETÁRIA
-    // =========================================================
     private static void menuSecretaria(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- MENU SECRETÁRIA -----");
-            System.out.println("1. Gerenciar Pacientes"); // Cadastrar, atualizar e remover
-            System.out.println("2. Gerenciar Consultas (Agendar/Cancelar)"); // Cadastrar, atualizar e remover
+            System.out.println("1. Gerenciar Pacientes");
+            System.out.println("2. Gerenciar Consultas (Agendar/Cancelar)");
             System.out.println("3. Gerar Relatório de Consultas do Dia Seguinte");
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("Escolha a opção: ");
@@ -167,7 +147,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Sub-Menu de Pacientes
     private static void menuGerenciarPacientes(Scanner scanner) {
         int opcao = -1;
         do {
@@ -184,12 +163,22 @@ public class Main {
                 scanner.nextLine();
 
                 switch (opcao) {
-                    case 1: cadastrarPaciente(scanner); break;
-                    case 2: atualizarPaciente(scanner); break;
-                    case 3: removerPaciente(scanner); break;
-                    case 4: listarPacientes(); break;
-                    case 0: break;
-                    default: System.out.println("Opção inválida.");
+                    case 1:
+                        cadastrarPaciente(scanner);
+                        break;
+                    case 2:
+                        atualizarPaciente(scanner);
+                        break;
+                    case 3:
+                        removerPaciente(scanner);
+                        break;
+                    case 4:
+                        listarPacientes();
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número.");
@@ -204,7 +193,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Cadastro de Paciente
     private static void cadastrarPaciente(Scanner scanner) {
         System.out.println("\n--- CADASTRO DE PACIENTE ---");
         System.out.print("Nome: ");
@@ -241,7 +229,6 @@ public class Main {
         scanner.nextLine();
         TipoConvenio tipoConvenio = (tipoConvenioOp == 1) ? TipoConvenio.PARTICULAR : TipoConvenio.PLANO_SAUDE;
 
-        // CORREÇÃO: Usar o SecretariaServico para cadastrar
         Paciente novoPaciente = secretariaServico.cadastrarPaciente(nome, cpf, dataNascimento, endereco, contato, tipoConvenio);
         System.out.println("Paciente cadastrado com sucesso! ID: " + novoPaciente.getId());
     }
@@ -251,7 +238,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Atualizar Paciente (Secretaria)
     private static void atualizarPaciente(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente a ser atualizado: ");
@@ -295,7 +281,6 @@ public class Main {
         scanner.nextLine();
         TipoConvenio tipoConvenio = (tipoConvenioOp == 1) ? TipoConvenio.PARTICULAR : TipoConvenio.PLANO_SAUDE;
 
-        // CORREÇÃO: Usar o SecretariaServico para atualizar
         if (secretariaServico.atualizarPaciente(id, nome, endereco, contato, tipoConvenio)) {
             System.out.println("Paciente atualizado com sucesso!");
         } else {
@@ -308,14 +293,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Remover Paciente
     private static void removerPaciente(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente a ser removido: ");
         int id = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: Usar o SecretariaServico para remover
         if (secretariaServico.removerPaciente(id)) {
             System.out.println("Paciente ID " + id + " removido com sucesso!");
         } else {
@@ -326,10 +309,8 @@ public class Main {
     /**
      * Lista todos os pacientes cadastrados no PacienteServico.
      */
-    // Implementação de Listar Pacientes
     private static void listarPacientes() {
         System.out.println("\n--- LISTA DE PACIENTES ---");
-        // (OK) Acessar o pacienteServico diretamente para listar é aceitável.
         if (pacienteServico.getListaPacientes().isEmpty()) {
             System.out.println("Nenhum paciente cadastrado.");
             return;
@@ -346,13 +327,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Sub-Menu de Consultas
     private static void menuGerenciarConsultas(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- GERENCIAR CONSULTAS -----");
             System.out.println("1. Agendar Nova Consulta");
-            System.out.println("2. Cancelar Consulta"); // CORREÇÃO: O método é 'remover'
+            System.out.println("2. Cancelar Consulta");
             System.out.println("3. Listar Todas as Consultas");
             System.out.println("0. Voltar ao Menu Secretária");
             System.out.print("Escolha a opção: ");
@@ -362,11 +342,19 @@ public class Main {
                 scanner.nextLine();
 
                 switch (opcao) {
-                    case 1: agendarConsulta(scanner); break;
-                    case 2: cancelarConsulta(scanner); break; // Chama o método 'cancelarConsulta' da Main
-                    case 3: listarConsultas(); break;
-                    case 0: break;
-                    default: System.out.println("Opção inválida.");
+                    case 1:
+                        agendarConsulta(scanner);
+                        break;
+                    case 2:
+                        cancelarConsulta(scanner);
+                        break;
+                    case 3:
+                        listarConsultas();
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número.");
@@ -382,7 +370,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Agendar Consulta
     private static void agendarConsulta(Scanner scanner) {
         System.out.println("\n--- AGENDAR CONSULTA ---");
 
@@ -396,13 +383,11 @@ public class Main {
             return;
         }
 
-        // CORREÇÃO: Listar médicos da lista local
         listarMedicos();
         System.out.print("ID do Médico: ");
         int idMedico = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: Buscar médico na lista local
         Medico medico = buscarMedicoNaLista(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado. Use os IDs da lista.");
@@ -417,7 +402,6 @@ public class Main {
         scanner.nextLine();
         TipoConsulta tipoConsulta = (tipoOp == 1) ? TipoConsulta.NORMAL : TipoConsulta.RETORNO;
 
-        // CORREÇÃO: Passar os OBJETOS 'medico' e 'paciente' para o serviço
         Consulta novaConsulta = secretariaServico.cadastrarConsulta(dataHora, medico, paciente, tipoConsulta);
 
         if (novaConsulta != null) {
@@ -431,14 +415,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Cancelar Consulta
     private static void cancelarConsulta(Scanner scanner) {
         listarConsultas();
         System.out.print("Digite o ID da consulta a ser cancelada: ");
         int id = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: O método no serviço chama-se 'removerConsulta'
         if (secretariaServico.removerConsulta(id)) {
             System.out.println("Consulta ID " + id + " cancelada com sucesso!");
         } else {
@@ -449,7 +431,6 @@ public class Main {
     /**
      * Lista todas as consultas agendadas no ConsultaServico.
      */
-    // Implementação de Listar Consultas
     private static void listarConsultas() {
         System.out.println("\n--- LISTA DE CONSULTAS ---");
         List<Consulta> lista = consultaServico.getListaConsultas();
@@ -470,7 +451,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Gerar Relatório de Consultas do Dia Seguinte (Secretaria)
     private static void gerarRelatorioConsultasSecretaria(Scanner scanner) {
         System.out.println("\n--- RELATÓRIO DE CONSULTAS DO DIA SEGUINTE ---");
         System.out.print("Filtrar por Contato (EMAIL ou TELEFONE): ");
@@ -481,8 +461,6 @@ public class Main {
             return;
         }
 
-        // CORREÇÃO: Passar a data de "hoje" para o método do serviço.
-        // Usamos atStartOfDay() para garantir uma referência de data limpa.
         List<Consulta> consultasFiltradas = secretariaServico.gerarRelatorioConsultas(LocalDate.now().atStartOfDay(), filtro);
 
         if (consultasFiltradas.isEmpty()) {
@@ -492,14 +470,12 @@ public class Main {
 
         System.out.println("\n--- CONSULTAS PARA CONFIRMAÇÃO (Filtro por: " + filtro + ") ---");
 
-        // CORREÇÃO: O serviço já filtrou a data. Apenas exibimos os resultados.
         for (Consulta c : consultasFiltradas) {
             String contatoInfo = filtro.equals("EMAIL") ? c.getPaciente().getContato().getEmail() : c.getPaciente().getContato().getTelefone();
 
             System.out.printf("Consulta ID %d | Paciente: %s | Data/Hora: %s | Contato (%s): %s%n",
                     c.getId(), c.getPaciente().getNome(), c.getDataHora().toString(), filtro, contatoInfo);
 
-            // Simulação da funcionalidade do Gerenciador de Mensagens
             System.out.println("    -> SIMULANDO ENVIO de " + filtro + " para confirmação.");
         }
         System.out.println("Relatório de confirmação e simulação de envio de mensagem concluídos.");
@@ -510,9 +486,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // =========================================================
-    // MENU MÉDICO
-    // =========================================================
     private static void menuMedico(Scanner scanner) {
         int opcao = -1;
         do {
@@ -556,7 +529,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Sub-Menu de Dados Adicionais
     private static void menuGerenciarDadosAdicionais(Scanner scanner) {
         int opcao = -1;
         do {
@@ -572,11 +544,19 @@ public class Main {
                 scanner.nextLine();
 
                 switch (opcao) {
-                    case 1: atualizarDadosAdicionais(scanner); break;
-                    case 2: limparDadosAdicionais(scanner); break;
-                    case 3: visualizarDadosAdicionais(scanner); break;
-                    case 0: break;
-                    default: System.out.println("Opção inválida.");
+                    case 1:
+                        atualizarDadosAdicionais(scanner);
+                        break;
+                    case 2:
+                        limparDadosAdicionais(scanner);
+                        break;
+                    case 3:
+                        visualizarDadosAdicionais(scanner);
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número.");
@@ -591,7 +571,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Atualizar Dados Adicionais (Médico)
     private static void atualizarDadosAdicionais(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
@@ -627,7 +606,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Limpar Dados Adicionais (Médico)
     private static void limparDadosAdicionais(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente para limpar dados adicionais: ");
@@ -646,7 +624,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Visualizar Dados Adicionais (Médico)
     private static void visualizarDadosAdicionais(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente para visualizar dados adicionais: ");
@@ -675,7 +652,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Sub-Menu de Prontuário
     private static void menuGerenciarProntuario(Scanner scanner) {
         int opcao = -1;
         do {
@@ -692,12 +668,22 @@ public class Main {
                 scanner.nextLine();
 
                 switch (opcao) {
-                    case 1: cadastrarProntuario(scanner); break;
-                    case 2: atualizarProntuario(scanner); break;
-                    case 3: removerProntuario(scanner); break;
-                    case 4: visualizarHistoricoProntuarios(scanner); break;
-                    case 0: break;
-                    default: System.out.println("Opção inválida.");
+                    case 1:
+                        cadastrarProntuario(scanner);
+                        break;
+                    case 2:
+                        atualizarProntuario(scanner);
+                        break;
+                    case 3:
+                        removerProntuario(scanner);
+                        break;
+                    case 4:
+                        visualizarHistoricoProntuarios(scanner);
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número.");
@@ -712,14 +698,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Cadastrar Prontuário (Médico)
     private static void cadastrarProntuario(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: Listar e buscar médico da lista local
         listarMedicos();
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
@@ -738,7 +722,6 @@ public class Main {
         System.out.print("Prescrição: ");
         String prescricao = scanner.nextLine();
 
-        // CORREÇÃO: Passar o OBJETO 'medico'
         if (medicoServico.cadastrarProntuario(idPaciente, medico, sintomas, diagnostico, prescricao)) {
             System.out.println("Prontuário cadastrado com sucesso!");
         } else {
@@ -751,15 +734,13 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Atualizar Prontuário (Médico)
     private static void atualizarProntuario(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
         scanner.nextLine();
 
-        // Chamada o método visualizar para ajudar o usuário
-        visualizarHistoricoProntuarios(idPaciente, scanner); // Passando o ID direto
+        visualizarHistoricoProntuarios(idPaciente, scanner);
 
         System.out.print("Digite o ID do prontuário a ser atualizado: ");
         int idProntuario = scanner.nextInt();
@@ -785,15 +766,13 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Remover Prontuário (Médico)
     private static void removerProntuario(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
         scanner.nextLine();
 
-        // Chamada o método visualizar para ajudar o usuário
-        visualizarHistoricoProntuarios(idPaciente, scanner); // Passando o ID direto
+        visualizarHistoricoProntuarios(idPaciente, scanner);
 
         System.out.print("Digite o ID do prontuário a ser removido: ");
         int idProntuario = scanner.nextInt();
@@ -811,10 +790,8 @@ public class Main {
      * Sobrecarga interna.
      *
      * @param idPaciente O ID do paciente.
-     * @param scanner Objeto Scanner para leitura da entrada do usuário.
+     * @param scanner    Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Visualizar Histórico de Prontuários (Médico)
-    // Sobrecarga para ser chamada internamente sem pedir o ID de novo
     private static void visualizarHistoricoProntuarios(int idPaciente, Scanner scanner) {
         Paciente paciente = pacienteServico.buscarPacientePorId(idPaciente);
         if (paciente == null) {
@@ -844,7 +821,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Método original para ser chamado pelo menu
     private static void visualizarHistoricoProntuarios(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente para visualizar prontuários: ");
@@ -859,7 +835,6 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Sub-Menu de Relatórios Médicos
     private static void menuGerarRelatoriosMedicos(Scanner scanner) {
         int opcao = -1;
         do {
@@ -876,12 +851,22 @@ public class Main {
                 scanner.nextLine();
 
                 switch (opcao) {
-                    case 1: gerarReceita(scanner); break;
-                    case 2: gerarAtestado(scanner); break;
-                    case 3: gerarDeclaracaoAcompanhamento(scanner); break;
-                    case 4: gerarRelatorioClientesAtendidos(scanner); break;
-                    case 0: break;
-                    default: System.out.println("Opção inválida.");
+                    case 1:
+                        gerarReceita(scanner);
+                        break;
+                    case 2:
+                        gerarAtestado(scanner);
+                        break;
+                    case 3:
+                        gerarDeclaracaoAcompanhamento(scanner);
+                        break;
+                    case 4:
+                        gerarRelatorioClientesAtendidos(scanner);
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número.");
@@ -896,14 +881,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Gerar Receita (Médico)
     private static void gerarReceita(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: Listar e buscar médico da lista local
         listarMedicos();
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
@@ -917,7 +900,6 @@ public class Main {
         System.out.print("Prescrição (Medicamentos e dosagem): ");
         String prescricao = scanner.nextLine();
 
-        // CORREÇÃO: Passar o OBJETO 'medico'
         String receita = medicoServico.gerarReceita(idPaciente, medico, prescricao);
         System.out.println("\n" + receita);
     }
@@ -927,14 +909,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Gerar Atestado (Médico)
     private static void gerarAtestado(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: Listar e buscar médico da lista local
         listarMedicos();
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
@@ -949,7 +929,6 @@ public class Main {
         int diasAfastamento = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: Passar o OBJETO 'medico'
         String atestado = medicoServico.gerarAtestado(idPaciente, medico, diasAfastamento);
         System.out.println("\n" + atestado);
     }
@@ -959,14 +938,12 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Gerar Declaração de Acompanhamento (Médico)
     private static void gerarDeclaracaoAcompanhamento(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
         scanner.nextLine();
 
-        // CORREÇÃO: Listar e buscar médico da lista local
         listarMedicos();
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
@@ -980,52 +957,41 @@ public class Main {
         System.out.print("Nome do Acompanhante: ");
         String nomeAcompanhante = scanner.nextLine();
 
-        // CORREÇÃO: Passar o OBJETO 'medico'
         String declaracao = medicoServico.gerarDeclaracaoAcompanhamento(idPaciente, medico, 0, nomeAcompanhante);
         System.out.println("\n" + declaracao);
     }
-
-    // No arquivo: Main.java
 
     /**
      * Gera o relatório de clientes atendidos por um médico em um mês/ano específico.
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    // Implementação de Gerar Relatório de Clientes Atendidos (Médico)
     private static void gerarRelatorioClientesAtendidos(Scanner scanner) {
         System.out.println("\n--- RELATÓRIO DE PACIENTES ATENDIDOS ---");
 
-        // 1. Pedir ID do Médico
         listarMedicos();
         System.out.print("Digite o ID do médico: ");
         int idMedico = scanner.nextInt();
         scanner.nextLine();
 
-        // Validação simples (busca o médico)
         Medico medico = buscarMedicoNaLista(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado.");
             return;
         }
 
-        // 2. Pedir Mês
         System.out.print("Digite o Mês (1-12): ");
         int mes = scanner.nextInt();
         scanner.nextLine();
 
-        // 3. Pedir Ano
         System.out.print("Digite o Ano (Ex: 2025): ");
         int ano = scanner.nextInt();
         scanner.nextLine();
 
-        // 4. Buscar a lista de consultas
         List<Consulta> todasConsultas = consultaServico.getListaConsultas();
 
-        // 5. Chamar o serviço
         List<Paciente> pacientes = medicoServico.getClientesAtendidosMes(idMedico, mes, ano, todasConsultas);
 
-        // 6. Exibir resultados
         if (pacientes.isEmpty()) {
             System.out.printf("Nenhum paciente único atendido por %s no Mês/Ano: %d/%d%n",
                     medico.getNome(), mes, ano);
@@ -1040,10 +1006,6 @@ public class Main {
                     p.getId(), p.getNome(), p.getCpf());
         }
     }
-
-    // =========================================================
-    // MÉTODOS AUXILIARES (NOVOS)
-    // =========================================================
 
     /**
      * Lista os médicos da lista 'medicosDaClinica' (mantida na Main).
@@ -1062,6 +1024,7 @@ public class Main {
 
     /**
      * Busca um médico por ID na lista 'medicosDaClinica' (mantida na Main).
+     *
      * @param id O ID do médico a ser buscado.
      * @return O objeto Medico, ou null se não for encontrado.
      */

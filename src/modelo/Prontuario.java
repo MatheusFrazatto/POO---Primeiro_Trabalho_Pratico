@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * Cada instância desta classe documenta uma consulta específica,
  * detalhando os sintomas relatados, o diagnóstico do médico e a
  * prescrição.
- *
+ * <p>
  * Cada Prontuario é associado a um {@link Paciente} e a um {@link Medico} (que o criou).
  */
 public class Prontuario {
@@ -22,12 +22,12 @@ public class Prontuario {
     /**
      * Cria um novo registro de prontuário.
      *
-     * @param id O ID deste registro (geralmente 0, para ser definido pelo {@link Paciente}).
-     * @param data A data em que o atendimento foi realizado.
-     * @param sintomas Descrição dos sintomas apresentados pelo paciente.
+     * @param id          O ID deste registro (geralmente 0, para ser definido pelo {@link Paciente}).
+     * @param data        A data em que o atendimento foi realizado.
+     * @param sintomas    Descrição dos sintomas apresentados pelo paciente.
      * @param diagnostico O diagnóstico firmado pelo médico.
-     * @param prescricao O tratamento, medicamentos ou recomendações prescritas.
-     * @param medico O objeto Medico que realizou este atendimento.
+     * @param prescricao  O tratamento, medicamentos ou recomendações prescritas.
+     * @param medico      O objeto Medico que realizou este atendimento.
      */
     public Prontuario(int id, LocalDate data, String sintomas, String diagnostico, String prescricao, Medico medico) {
         this.id = id;

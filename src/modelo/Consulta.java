@@ -1,6 +1,7 @@
 package modelo;
 
 import utilitario.TipoConsulta;
+
 import java.time.LocalDateTime;
 
 /**
@@ -19,9 +20,9 @@ public class Consulta {
      * Construtor principal para criar uma nova instância de Consulta.
      *
      * @param dataHora Data e hora exatas do agendamento.
-     * @param medico O objeto Medico que realizará o atendimento.
+     * @param medico   O objeto Medico que realizará o atendimento.
      * @param paciente O objeto Paciente que será atendido.
-     * @param tipo O tipo da consulta (definido pelo enum TipoConsulta, ex: NORMAL ou RETORNO).
+     * @param tipo     O tipo da consulta (definido pelo enum TipoConsulta, ex: NORMAL ou RETORNO).
      */
     public Consulta(LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
         this.dataHora = dataHora;

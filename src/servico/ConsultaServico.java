@@ -1,7 +1,3 @@
-/**
- * Serviço responsável por gerenciar as operações relacionadas a Consultas.
- * Inclui métodos para cadastrar, atualizar, remover e buscar consultas.
- */
 package servico;
 
 import modelo.Consulta;
@@ -13,6 +9,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serviço responsável por gerenciar as operações relacionadas a Consultas.
+ * Inclui métodos para cadastrar, atualizar, remover e buscar consultas.
+ */
 public class ConsultaServico {
     private List<Consulta> listaConsultas = new ArrayList<>();
     private int proximoIdConsulta = 1;
@@ -20,16 +20,17 @@ public class ConsultaServico {
     /**
      * Construtor padrão para o ConsultaServico.
      */
-    public ConsultaServico() {}
+    public ConsultaServico() {
+    }
 
     /**
      * Cadastra uma nova consulta no sistema.
      * Atribui um ID único à nova consulta.
      *
      * @param dataHora A data e hora da consulta.
-     * @param medico O médico que realizará a consulta.
+     * @param medico   O médico que realizará a consulta.
      * @param paciente O paciente agendado para a consulta.
-     * @param tipo O tipo de consulta (normal ou retorno).
+     * @param tipo     O tipo de consulta (normal ou retorno).
      * @return O objeto Consulta recém-cadastrado.
      */
     public Consulta cadastrarConsulta(LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {
@@ -42,11 +43,11 @@ public class ConsultaServico {
     /**
      * Atualiza os dados de uma consulta existente.
      *
-     * @param id O ID da consulta a ser atualizada.
+     * @param id       O ID da consulta a ser atualizada.
      * @param dataHora A nova data e hora da consulta.
-     * @param medico O novo médico da consulta.
+     * @param medico   O novo médico da consulta.
      * @param paciente O novo paciente da consulta.
-     * @param tipo O novo tipo de consulta.
+     * @param tipo     O novo tipo de consulta.
      * @return {@code true} se a consulta foi encontrada e atualizada, {@code false} caso contrário.
      */
     public Boolean atualizarConsulta(int id, LocalDateTime dataHora, Medico medico, Paciente paciente, TipoConsulta tipo) {

@@ -20,21 +20,22 @@ public class Paciente {
     private DadosAdicionais dadosAdicionais;
     private List<Prontuario> prontuarios;
     private int proximoIdProntuario = 1;
+
     /**
      * Cria um novo paciente.
      *
-     * @param id O ID.
-     * @param cpf O CPF.
-     * @param nome O nome.
+     * @param id             O ID.
+     * @param nome           O nome.
+     * @param cpf            O CPF.
      * @param dataNascimento A data de nascimento.
-     * @param endereco O endereço.
-     * @param contato O contato.
-     * @param tipoConvenio O tipo de convênio.
+     * @param endereco       O endereço.
+     * @param contato        O contato.
+     * @param tipoConvenio   O tipo de convênio.
      */
-    public Paciente(int id, String cpf, String nome, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
+    public Paciente(int id, String nome, String cpf, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
         this.id = id;
-        this.cpf = cpf;
         this.nome = nome;
+        this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.endereco = endereco;
         this.contato = contato;

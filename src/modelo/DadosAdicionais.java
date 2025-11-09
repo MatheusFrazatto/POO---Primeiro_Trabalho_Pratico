@@ -28,13 +28,13 @@ public class DadosAdicionais {
     /**
      * Construtor completo para criar um histórico de saúde com dados predefinidos.
      *
-     * @param fuma Se fuma.
-     * @param bebe Se bebe.
-     * @param colesterol Se tem colesterol.
-     * @param diabete Se tem diabetes.
+     * @param fuma           Se fuma.
+     * @param bebe           Se bebe.
+     * @param colesterol     Se tem colesterol.
+     * @param diabete        Se tem diabetes.
      * @param doencaCardiaca Doenças cardíacas.
-     * @param cirurgias Cirurgias prévias.
-     * @param alergias Alergias.
+     * @param cirurgias      Cirurgias prévias.
+     * @param alergias       Alergias.
      */
     public DadosAdicionais(boolean fuma, boolean bebe, boolean colesterol, boolean diabete, String doencaCardiaca, String cirurgias, String alergias) {
         this.fuma = fuma;

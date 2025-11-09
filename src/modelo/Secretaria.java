@@ -11,9 +11,9 @@ public class Secretaria extends Funcionario {
     /**
      * Construtor para criar um novo objeto Secretaria.
      *
-     * @param id O ID único do funcionário.
-     * @param nome O nome completo.
-     * @param cpf O CPF.
+     * @param id      O ID único do funcionário.
+     * @param nome    O nome completo.
+     * @param cpf     O CPF.
      * @param salario O salário.
      */
     public Secretaria(int id, String nome, String cpf, float salario) {

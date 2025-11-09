@@ -1,7 +1,7 @@
 package utilitario;
 
 /**
- * Define os tipos de consulta e suas durações. 
+ * Define os tipos de consulta e suas durações.
  */
 public enum TipoConsulta {
     /**
@@ -17,7 +17,7 @@ public enum TipoConsulta {
 
     /**
      * Construtor do enum.
-     *S
+     *
      * @param duracaoEmMinutos Duração da consulta em minutos.
      */
     TipoConsulta(int duracaoEmMinutos) {
@@ -26,6 +26,7 @@ public enum TipoConsulta {
 
     /**
      * Retorna a duração da consulta.
+     *
      * @return Duração em minutos.
      */
     public int getDuracaoEmMinutos() {

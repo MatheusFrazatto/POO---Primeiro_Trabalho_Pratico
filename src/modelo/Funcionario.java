@@ -3,7 +3,6 @@ package modelo;
 /**
  * Classe abstrata base que define os atributos e comportamentos comuns
  * a todos os funcionários da clínica.
-
  */
 public abstract class Funcionario {
     private int id;
@@ -11,7 +10,11 @@ public abstract class Funcionario {
     private String cpf;
     private float salario;
 
-    public Funcionario() {}
+    /**
+     * Construtor padrão da classe Funcionario.
+     */
+    public Funcionario() {
+    }
 
     public int getId() {
         return id;

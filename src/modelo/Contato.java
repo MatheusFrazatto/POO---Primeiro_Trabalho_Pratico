@@ -14,7 +14,7 @@ public class Contato {
      * Cria uma nova instância de Contato.
      *
      * @param telefone O número de telefone (ex: "44998765432").
-     * @param email O endereço de e-mail (ex: "paciente@email.com"). Pode ser vazio.
+     * @param email    O endereço de e-mail (ex: "paciente@email.com"). Pode ser vazio.
      */
     public Contato(String telefone, String email) {
         this.telefone = telefone;
