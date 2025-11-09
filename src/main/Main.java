@@ -475,9 +475,16 @@ public class Main {
 
             System.out.printf("Consulta ID %d | Paciente: %s | Data/Hora: %s | Contato (%s): %s%n",
                     c.getId(), c.getPaciente().getNome(), c.getDataHora().toString(), filtro, contatoInfo);
-
-            System.out.println("    -> SIMULANDO ENVIO de " + filtro + " para confirmação.");
         }
+
+        System.out.println("    -> SIMULANDO ENVIO de " + filtro + " para confirmação.");
+
+        if(filtro.equals("EMAIL")) {
+            gerenciadorDeMensagensServico.enviarEmails(consultasFiltradas);
+        } else {
+            gerenciadorDeMensagensServico.enviarMensagensSMS(consultasFiltradas);
+        }
+
         System.out.println("Relatório de confirmação e simulação de envio de mensagem concluídos.");
     }
 

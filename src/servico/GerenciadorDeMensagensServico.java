@@ -40,7 +40,7 @@ public class GerenciadorDeMensagensServico {
             } else {
                 System.out.println(
                         "Enviando email para: " + contato.getEmail() +
-                                " Mensagem: Consulta agendada para amanhã as " + consulta.getDataHora().format(formatador)
+                                " | Mensagem: Consulta agendada para amanhã as " + consulta.getDataHora().format(formatador)
                 );
             }
 
@@ -68,7 +68,7 @@ public class GerenciadorDeMensagensServico {
             } else {
                 System.out.println(
                         "Enviando SMS para: " + contato.getTelefone() +
-                                " Mensagem: Consulta agendada para amanhã as " + consulta.getDataHora().format(formatador)
+                                " | Mensagem: Consulta agendada para amanhã as " + consulta.getDataHora().format(formatador)
                 );
             }
 
