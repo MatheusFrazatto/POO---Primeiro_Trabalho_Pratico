@@ -3,7 +3,6 @@ package main;
 import modelo.*;
 import servico.*;
 import utilitario.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,13 +16,13 @@ import java.util.Scanner;
  * e pela interface de menu interativo para simular os acessos de Secretária e Médico.
  */
 public class Main {
-    private static PacienteServico pacienteServico = new PacienteServico();
-    private static MedicoServico medicoServico = new MedicoServico(pacienteServico);
-    private static ConsultaServico consultaServico = new ConsultaServico();
-    private static SecretariaServico secretariaServico = new SecretariaServico(pacienteServico, consultaServico);
-    private static GerenciadorDeMensagensServico gerenciadorDeMensagensServico = new GerenciadorDeMensagensServico();
+    public static PacienteServico pacienteServico = new PacienteServico();
+    public static MedicoServico medicoServico = new MedicoServico(pacienteServico);
+    public static ConsultaServico consultaServico = new ConsultaServico();
+    public static SecretariaServico secretariaServico = new SecretariaServico(pacienteServico, consultaServico);
+    public static GerenciadorDeMensagensServico gerenciadorDeMensagensServico = new GerenciadorDeMensagensServico();
 
-    private static List<Medico> medicosDaClinica = new ArrayList<>();
+    public static List<Medico> medicosDaClinica = new ArrayList<>();
 
 
     /**
@@ -104,7 +103,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void menuSecretaria(Scanner scanner) {
+    public static void menuSecretaria(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- MENU SECRETÁRIA -----");
@@ -147,7 +146,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void menuGerenciarPacientes(Scanner scanner) {
+    public static void menuGerenciarPacientes(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- GERENCIAR PACIENTES -----");
@@ -193,7 +192,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void cadastrarPaciente(Scanner scanner) {
+    public static void cadastrarPaciente(Scanner scanner) {
         System.out.println("\n--- CADASTRO DE PACIENTE ---");
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
@@ -238,7 +237,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void atualizarPaciente(Scanner scanner) {
+    public static void atualizarPaciente(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente a ser atualizado: ");
         int id = scanner.nextInt();
@@ -293,7 +292,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void removerPaciente(Scanner scanner) {
+    public static void removerPaciente(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente a ser removido: ");
         int id = scanner.nextInt();
@@ -309,7 +308,7 @@ public class Main {
     /**
      * Lista todos os pacientes cadastrados no PacienteServico.
      */
-    private static void listarPacientes() {
+    public static void listarPacientes() {
         System.out.println("\n--- LISTA DE PACIENTES ---");
         if (pacienteServico.getListaPacientes().isEmpty()) {
             System.out.println("Nenhum paciente cadastrado.");
@@ -327,7 +326,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void menuGerenciarConsultas(Scanner scanner) {
+    public static void menuGerenciarConsultas(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- GERENCIAR CONSULTAS -----");
@@ -370,7 +369,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void agendarConsulta(Scanner scanner) {
+    public static void agendarConsulta(Scanner scanner) {
         System.out.println("\n--- AGENDAR CONSULTA ---");
 
         listarPacientes();
@@ -415,7 +414,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void cancelarConsulta(Scanner scanner) {
+    public static void cancelarConsulta(Scanner scanner) {
         listarConsultas();
         System.out.print("Digite o ID da consulta a ser cancelada: ");
         int id = scanner.nextInt();
@@ -431,7 +430,7 @@ public class Main {
     /**
      * Lista todas as consultas agendadas no ConsultaServico.
      */
-    private static void listarConsultas() {
+    public static void listarConsultas() {
         System.out.println("\n--- LISTA DE CONSULTAS ---");
         List<Consulta> lista = consultaServico.getListaConsultas();
         if (lista.isEmpty()) {
@@ -451,7 +450,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void gerarRelatorioConsultasSecretaria(Scanner scanner) {
+    public static void gerarRelatorioConsultasSecretaria(Scanner scanner) {
         System.out.println("\n--- RELATÓRIO DE CONSULTAS DO DIA SEGUINTE ---");
         System.out.print("Filtrar por Contato (EMAIL ou TELEFONE): ");
         String filtro = scanner.nextLine().toUpperCase();
@@ -479,7 +478,7 @@ public class Main {
 
         System.out.println("    -> SIMULANDO ENVIO de " + filtro + " para confirmação.");
 
-        if(filtro.equals("EMAIL")) {
+        if (filtro.equals("EMAIL")) {
             gerenciadorDeMensagensServico.enviarEmails(consultasFiltradas);
         } else {
             gerenciadorDeMensagensServico.enviarMensagensSMS(consultasFiltradas);
@@ -493,7 +492,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void menuMedico(Scanner scanner) {
+    public static void menuMedico(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- MENU MÉDICO -----");
@@ -536,7 +535,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void menuGerenciarDadosAdicionais(Scanner scanner) {
+    public static void menuGerenciarDadosAdicionais(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- GERENCIAR DADOS ADICIONAIS -----");
@@ -578,7 +577,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void atualizarDadosAdicionais(Scanner scanner) {
+    public static void atualizarDadosAdicionais(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
@@ -613,7 +612,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void limparDadosAdicionais(Scanner scanner) {
+    public static void limparDadosAdicionais(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente para limpar dados adicionais: ");
         int idPaciente = scanner.nextInt();
@@ -631,7 +630,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void visualizarDadosAdicionais(Scanner scanner) {
+    public static void visualizarDadosAdicionais(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente para visualizar dados adicionais: ");
         int idPaciente = scanner.nextInt();
@@ -659,7 +658,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void menuGerenciarProntuario(Scanner scanner) {
+    public static void menuGerenciarProntuario(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- GERENCIAR PRONTUÁRIO -----");
@@ -705,7 +704,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void cadastrarProntuario(Scanner scanner) {
+    public static void cadastrarProntuario(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
@@ -741,7 +740,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void atualizarProntuario(Scanner scanner) {
+    public static void atualizarProntuario(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
@@ -773,7 +772,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void removerProntuario(Scanner scanner) {
+    public static void removerProntuario(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
@@ -799,7 +798,7 @@ public class Main {
      * @param idPaciente O ID do paciente.
      * @param scanner    Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void visualizarHistoricoProntuarios(int idPaciente, Scanner scanner) {
+    public static void visualizarHistoricoProntuarios(int idPaciente, Scanner scanner) {
         Paciente paciente = pacienteServico.buscarPacientePorId(idPaciente);
         if (paciente == null) {
             System.out.println("Paciente não encontrado.");
@@ -828,7 +827,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void visualizarHistoricoProntuarios(Scanner scanner) {
+    public static void visualizarHistoricoProntuarios(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente para visualizar prontuários: ");
         int idPaciente = scanner.nextInt();
@@ -842,7 +841,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void menuGerarRelatoriosMedicos(Scanner scanner) {
+    public static void menuGerarRelatoriosMedicos(Scanner scanner) {
         int opcao = -1;
         do {
             System.out.println("\n----- GERAR RELATÓRIOS MÉDICOS -----");
@@ -888,7 +887,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void gerarReceita(Scanner scanner) {
+    public static void gerarReceita(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
@@ -916,7 +915,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void gerarAtestado(Scanner scanner) {
+    public static void gerarAtestado(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
@@ -945,7 +944,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void gerarDeclaracaoAcompanhamento(Scanner scanner) {
+    public static void gerarDeclaracaoAcompanhamento(Scanner scanner) {
         listarPacientes();
         System.out.print("Digite o ID do paciente: ");
         int idPaciente = scanner.nextInt();
@@ -973,7 +972,7 @@ public class Main {
      *
      * @param scanner Objeto Scanner para leitura da entrada do usuário.
      */
-    private static void gerarRelatorioClientesAtendidos(Scanner scanner) {
+    public static void gerarRelatorioClientesAtendidos(Scanner scanner) {
         System.out.println("\n--- RELATÓRIO DE PACIENTES ATENDIDOS ---");
 
         listarMedicos();
@@ -1017,7 +1016,7 @@ public class Main {
     /**
      * Lista os médicos da lista 'medicosDaClinica' (mantida na Main).
      */
-    private static void listarMedicos() {
+    public static void listarMedicos() {
         System.out.println("\n--- LISTA DE MÉDICOS ---");
         if (medicosDaClinica.isEmpty()) {
             System.out.println("Nenhum médico cadastrado na Main.");
@@ -1035,7 +1034,7 @@ public class Main {
      * @param id O ID do médico a ser buscado.
      * @return O objeto Medico, ou null se não for encontrado.
      */
-    private static Medico buscarMedicoNaLista(int id) {
+    public static Medico buscarMedicoNaLista(int id) {
         for (Medico m : medicosDaClinica) {
             if (m.getId() == id) {
                 return m;
