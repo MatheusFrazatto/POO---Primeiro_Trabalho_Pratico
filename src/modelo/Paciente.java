@@ -151,4 +151,9 @@ public class Paciente {
         }
         return false;
     }
+    
+    @Override
+    public String toString() {
+        return this.nome; // Isso ensina o Java a mostrar o NOME na caixinha!
+    }
 }

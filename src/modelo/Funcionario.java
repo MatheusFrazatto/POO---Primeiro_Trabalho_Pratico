@@ -6,7 +6,7 @@ package modelo;
  */
 public abstract class Funcionario {
     private int id;
-    private String nome;
+    protected String nome;
     private String cpf;
     private float salario;
 

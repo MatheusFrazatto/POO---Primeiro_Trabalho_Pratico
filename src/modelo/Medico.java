@@ -45,4 +45,10 @@ public class Medico extends Funcionario {
     public void setEspecializacao(String especializacao) {
         this.especializacao = especializacao;
     }
+    
+    @Override
+    public String toString() {
+        // Retorna o Nome e a Especialidade para ficar bonito na lista
+        return this.nome + " (" + this.especializacao + ")";
+    }
 }

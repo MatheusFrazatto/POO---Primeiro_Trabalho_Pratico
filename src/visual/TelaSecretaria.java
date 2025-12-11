@@ -21,6 +21,11 @@ public class TelaSecretaria extends javax.swing.JFrame {
      */
     public TelaSecretaria() {
         initComponents();
+        
+        Main.inicializarDados();
+        preencherComboBoxes();      
+        atualizarTabelaPacientes();
+        atualizarTabelaConsultas();
     }
 
     /**
@@ -68,8 +73,6 @@ public class TelaSecretaria extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaPacientes = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        cbPaciente = new javax.swing.JComboBox<>();
-        cbMedico = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         txtDataHora = new javax.swing.JFormattedTextField();
         jLabel14 = new javax.swing.JLabel();
@@ -81,6 +84,8 @@ public class TelaSecretaria extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        cbPaciente = new javax.swing.JComboBox<>();
+        cbMedico = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         rbEmail = new javax.swing.JRadioButton();
@@ -91,7 +96,12 @@ public class TelaSecretaria extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(800, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTabbedPane1.setMaximumSize(new java.awt.Dimension(800, 600));
+        jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 600));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -283,17 +293,6 @@ public class TelaSecretaria extends javax.swing.JFrame {
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cbPaciente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbPaciente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPacienteActionPerformed(evt);
-            }
-        });
-        jPanel2.add(cbPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, -1, -1));
-
-        cbMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(cbMedico, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, -1));
-
         jLabel13.setText("Data/Hora:");
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
@@ -360,10 +359,19 @@ public class TelaSecretaria extends javax.swing.JFrame {
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 104, 780, -1));
 
         jLabel15.setText("Paciente:");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 40, -1, -1));
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 40, -1, -1));
 
         jLabel16.setText("Médico:");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 40, -1, -1));
+
+        cbPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPacienteActionPerformed(evt);
+            }
+        });
+        jPanel2.add(cbPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, -1, -1));
+
+        jPanel2.add(cbMedico, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, -1, -1));
 
         jTabbedPane1.addTab("Consultas", jPanel2);
 
@@ -372,6 +380,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         jLabel17.setText("Filtrar Por:");
         jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
+        buttonGroup3.add(rbEmail);
         rbEmail.setText("Email");
         rbEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -380,6 +389,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         });
         jPanel3.add(rbEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 6, -1, -1));
 
+        buttonGroup3.add(rbSmsTelefone);
         rbSmsTelefone.setText("SMS/Telefone");
         rbSmsTelefone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

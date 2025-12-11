@@ -29,7 +29,7 @@ public class Main {
      * Inicializa dados mock (pacientes, médicos e consultas) para facilitar os testes
      * e o uso da aplicação no ambiente de console.
      */
-    private static void inicializarDados() {
+    public static void inicializarDados() {
         Endereco end1 = new Endereco("Rua A", "100", "", "Centro", "Maringa", "PR");
         Contato cont1 = new Contato("44998765432", "joao.silva@email.com");
         pacienteServico.cadastrarPaciente("João Silva", "12345678900", LocalDate.of(1990, 5, 15), end1, cont1, TipoConvenio.PLANO_SAUDE);
