@@ -2,6 +2,7 @@ package modelo;
 
 import utilitario.TipoConvenio;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +10,32 @@ import java.util.List;
 /**
  * Guarda todos os dados de um paciente (dados pessoais, prontuários, etc.).
  */
+@Entity
 public class Paciente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
+
+    @Embedded
     private Endereco endereco;
+
+    @Embedded
     private Contato contato;
+
+    @Enumerated(EnumType.STRING)
     private TipoConvenio tipoConvenio;
+
+    @Embedded
     private DadosAdicionais dadosAdicionais;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prontuario> prontuarios;
-    private int proximoIdProntuario = 1;
+
+    public Paciente() {
+    }
 
     /**
      * Cria um novo paciente.
@@ -114,13 +130,12 @@ public class Paciente {
 
     /**
      * Adiciona um prontuário na lista do paciente.
-     * Define o ID do prontuário automaticamente.
      *
      * @param prontuario O prontuário a adicionar.
      */
     public void adicionarProntuario(Prontuario prontuario) {
-        prontuario.setId(proximoIdProntuario++);
         this.prontuarios.add(prontuario);
+        prontuario.setPaciente(this); // Mantém a consistência do modelo
     }
 
     /**
@@ -147,6 +162,7 @@ public class Paciente {
     public boolean removerProntuarioPorId(int idProntuario) {
         Prontuario p = buscarProntuarioPorId(idProntuario);
         if (p != null) {
+            p.setPaciente(null); // Mantém a consistência do modelo
             return this.prontuarios.remove(p);
         }
         return false;

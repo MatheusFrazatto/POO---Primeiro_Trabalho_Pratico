@@ -1,10 +1,16 @@
 package modelo;
 
+import javax.persistence.*;
+
 /**
  * Classe abstrata base que define os atributos e comportamentos comuns
  * a todos os funcionários da clínica.
  */
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Funcionario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     protected String nome;
     private String cpf;

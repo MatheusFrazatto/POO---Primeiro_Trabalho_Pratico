@@ -1,5 +1,7 @@
 package modelo;
 
+import javax.persistence.Entity;
+
 /**
  * Representa a entidade Médico dentro do sistema.
  * Esta classe herda de {@link Funcionario}, aproveitando os campos
@@ -7,9 +9,13 @@ package modelo;
  * da profissão médica: o CRM e sua
  * especialização.
  */
+@Entity
 public class Medico extends Funcionario {
     private String crm;
     private String especializacao;
+
+    public Medico() {
+    }
 
     /**
      * Construtor para criar um novo objeto Medico.

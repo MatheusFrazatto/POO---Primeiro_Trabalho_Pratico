@@ -2,6 +2,7 @@ package modelo;
 
 import utilitario.TipoConsulta;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -9,12 +10,24 @@ import java.time.LocalDateTime;
  * Esta classe é central para o sistema, pois armazena a relação entre
  * um {@link Paciente}, um {@link Medico} e a data/hora em que o atendimento ocorrerá.
  */
+@Entity
 public class Consulta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDateTime dataHora;
+
+    @ManyToOne
     private Medico medico;
+
+    @ManyToOne
     private Paciente paciente;
+
+    @Enumerated(EnumType.STRING)
     private TipoConsulta tipo;
+
+    public Consulta() {
+    }
 
     /**
      * Construtor principal para criar uma nova instância de Consulta.
@@ -34,7 +47,6 @@ public class Consulta {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }

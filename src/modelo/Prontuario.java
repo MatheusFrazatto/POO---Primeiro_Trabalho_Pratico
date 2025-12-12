@@ -1,5 +1,6 @@
 package modelo;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -10,14 +11,26 @@ import java.time.LocalDate;
  * <p>
  * Cada Prontuario é associado a um {@link Paciente} e a um {@link Medico} (que o criou).
  */
+@Entity
 public class Prontuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDate data;
     private String sintomas;
     private String diagnostico;
     private String prescricao;
+
+    @ManyToOne
     private Medico medico;
+
+    @ManyToOne
+    @JoinColumn(name = "paciente_id")
+    private Paciente paciente;
+
+    public Prontuario() {
+    }
 
     /**
      * Cria um novo registro de prontuário.
@@ -84,5 +97,13 @@ public class Prontuario {
 
     public void setMedico(Medico medico) {
         this.medico = medico;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }

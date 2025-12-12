@@ -1,10 +1,13 @@
 package modelo;
 
+import javax.persistence.Embeddable;
+
 /**
  * Representa um endereço postal completo.
  * Esta classe é utilizada para armazenar os dados de localização de
  * entidades, como {@link Paciente}.
  */
+@Embeddable
 public class Endereco {
     private String rua;
     private String numero;
@@ -12,6 +15,9 @@ public class Endereco {
     private String bairro;
     private String cidade;
     private String uf;
+
+    public Endereco() {
+    }
 
     /**
      * Cria uma nova instância de Endereco.

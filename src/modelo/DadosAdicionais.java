@@ -1,5 +1,7 @@
 package modelo;
 
+import javax.persistence.Embeddable;
+
 /**
  * Armazena o histórico de saúde e hábitos de vida do {@link Paciente} (Anamnese).
  * Esta classe é preenchida e gerenciada pelo {@link Medico} e contém informações
@@ -7,6 +9,7 @@ package modelo;
  * consumo de álcool, condições crônicas (diabetes, colesterol),
  * cirurgias prévias e alergias.
  */
+@Embeddable
 public class DadosAdicionais {
     private boolean fuma;
     private boolean bebe;

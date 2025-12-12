@@ -1,5 +1,7 @@
 package modelo;
 
+import javax.persistence.Entity;
+
 /**
  * Representa a entidade Secretária (ou secretário) no sistema.
  * Esta classe herda de {@link Funcionario} e representa um usuário
@@ -7,7 +9,12 @@ package modelo;
  * e gerenciamento de pacientes.
  *
  */
+@Entity
 public class Secretaria extends Funcionario {
+
+    public Secretaria() {
+    }
+
     /**
      * Construtor para criar um novo objeto Secretaria.
      *
