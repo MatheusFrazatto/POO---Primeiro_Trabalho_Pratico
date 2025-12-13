@@ -22,14 +22,18 @@ public class Main {
     public static SecretariaServico secretariaServico = new SecretariaServico(pacienteServico, consultaServico);
     public static GerenciadorDeMensagensServico gerenciadorDeMensagensServico = new GerenciadorDeMensagensServico();
 
-    public static List<Medico> medicosDaClinica = new ArrayList<>();
-
 
     /**
      * Inicializa dados mock (pacientes, médicos e consultas) para facilitar os testes
      * e o uso da aplicação no ambiente de console.
      */
     public static void inicializarDados() {
+        if (medicoServico.count() > 0) {
+            System.out.println("Banco de dados já populado com médicos. Pulando inicialização de dados.");
+            return;
+        }
+        System.out.println("Banco de dados está vazio ou não possui médicos. Inicializando dados");
+
         Endereco end1 = new Endereco("Rua A", "100", "", "Centro", "Maringa", "PR");
         Contato cont1 = new Contato("44998765432", "joao.silva@email.com");
         pacienteServico.cadastrarPaciente("João Silva", "12345678900", LocalDate.of(1990, 5, 15), end1, cont1, TipoConvenio.PLANO_SAUDE);
@@ -38,17 +42,21 @@ public class Main {
         Contato cont2 = new Contato("44991234567", "");
         pacienteServico.cadastrarPaciente("Maria Oliveira", "09876543211", LocalDate.of(1985, 10, 20), end2, cont2, TipoConvenio.PARTICULAR);
 
-        Medico medico1 = new Medico(1, "Dr. Pedro Santos", "11122233344", 8000.0f, "CRM/PR 12345", "Cardiologia");
-        Medico medico2 = new Medico(2, "Dra. Ana Costa", "55566677788", 9500.0f, "CRM/PR 67890", "Dermatologia");
+        Medico medico1 = new Medico(0, "Dr. Pedro Santos", "11122233344", 8000.0f, "CRM/PR 12345", "Cardiologia");
+        Medico medico2 = new Medico(0, "Dra. Ana Costa", "55566677788", 9500.0f, "CRM/PR 67890", "Dermatologia");
 
-        medicosDaClinica.add(medico1);
-        medicosDaClinica.add(medico2);
+        medicoServico.salvar(medico1);
+        medicoServico.salvar(medico2);
 
-        consultaServico.cadastrarConsulta(LocalDateTime.now().plusHours(1), medico1, pacienteServico.buscarPacientePorId(1), TipoConsulta.NORMAL);
+        List<Medico> medicosPersistidos = medicoServico.listarTodos();
+        Medico medicoPersistido1 = medicosPersistidos.get(0);
+        Medico medicoPersistido2 = medicosPersistidos.get(1);
+
+        consultaServico.cadastrarConsulta(LocalDateTime.now().plusHours(1), medicoPersistido1, pacienteServico.buscarPacientePorId(1), TipoConsulta.NORMAL);
 
         LocalDateTime amanha = LocalDate.now().plusDays(1).atStartOfDay();
-        consultaServico.cadastrarConsulta(amanha.withHour(9).withMinute(0), medico2, pacienteServico.buscarPacientePorId(2), TipoConsulta.RETORNO);
-        consultaServico.cadastrarConsulta(amanha.withHour(10).withMinute(0), medico1, pacienteServico.buscarPacientePorId(1), TipoConsulta.NORMAL);
+        consultaServico.cadastrarConsulta(amanha.withHour(9).withMinute(0), medicoPersistido2, pacienteServico.buscarPacientePorId(2), TipoConsulta.RETORNO);
+        consultaServico.cadastrarConsulta(amanha.withHour(10).withMinute(0), medicoPersistido1, pacienteServico.buscarPacientePorId(1), TipoConsulta.NORMAL);
 
         System.out.println("--- Dados iniciais (2 Pacientes, 2 Médicos e 3 Consultas) carregados. ---");
     }
@@ -387,7 +395,7 @@ public class Main {
         int idMedico = scanner.nextInt();
         scanner.nextLine();
 
-        Medico medico = buscarMedicoNaLista(idMedico);
+        Medico medico = buscarMedico(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado. Use os IDs da lista.");
             return;
@@ -714,7 +722,7 @@ public class Main {
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
         scanner.nextLine();
-        Medico medico = buscarMedicoNaLista(idMedico);
+        Medico medico = buscarMedico(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado.");
             return;
@@ -897,7 +905,7 @@ public class Main {
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
         scanner.nextLine();
-        Medico medico = buscarMedicoNaLista(idMedico);
+        Medico medico = buscarMedico(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado.");
             return;
@@ -925,7 +933,7 @@ public class Main {
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
         scanner.nextLine();
-        Medico medico = buscarMedicoNaLista(idMedico);
+        Medico medico = buscarMedico(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado.");
             return;
@@ -954,7 +962,7 @@ public class Main {
         System.out.print("Digite o ID do médico (Use 1 ou 2 para teste): ");
         int idMedico = scanner.nextInt();
         scanner.nextLine();
-        Medico medico = buscarMedicoNaLista(idMedico);
+        Medico medico = buscarMedico(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado.");
             return;
@@ -980,7 +988,7 @@ public class Main {
         int idMedico = scanner.nextInt();
         scanner.nextLine();
 
-        Medico medico = buscarMedicoNaLista(idMedico);
+        Medico medico = buscarMedico(idMedico);
         if (medico == null) {
             System.out.println("Médico não encontrado.");
             return;
@@ -1014,32 +1022,28 @@ public class Main {
     }
 
     /**
-     * Lista os médicos da lista 'medicosDaClinica' (mantida na Main).
+     * Lista os médicos cadastrados no banco de dados através do MedicoServico.
      */
     public static void listarMedicos() {
         System.out.println("\n--- LISTA DE MÉDICOS ---");
-        if (medicosDaClinica.isEmpty()) {
-            System.out.println("Nenhum médico cadastrado na Main.");
+        List<Medico> medicos = medicoServico.listarTodos();
+        if (medicos.isEmpty()) {
+            System.out.println("Nenhum médico cadastrado.");
             return;
         }
-        for (Medico m : medicosDaClinica) {
+        for (Medico m : medicos) {
             System.out.printf("ID: %d | Nome: %s | Especialização: %s%n",
                     m.getId(), m.getNome(), m.getEspecializacao());
         }
     }
 
     /**
-     * Busca um médico por ID na lista 'medicosDaClinica' (mantida na Main).
+     * Busca um médico por ID através do MedicoServico.
      *
      * @param id O ID do médico a ser buscado.
      * @return O objeto Medico, ou null se não for encontrado.
      */
-    public static Medico buscarMedicoNaLista(int id) {
-        for (Medico m : medicosDaClinica) {
-            if (m.getId() == id) {
-                return m;
-            }
-        }
-        return null;
+    public static Medico buscarMedico(int id) {
+        return medicoServico.buscarPorId(id);
     }
 }

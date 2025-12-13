@@ -115,8 +115,10 @@ public class SecretariaServico {
      */
     public List<Consulta> gerarRelatorioConsultas(LocalDateTime diaDeHoje, String filtroContato) {
         LocalDate dataDiaSeguinte = diaDeHoje.toLocalDate().plusDays(1);
+        System.out.println(dataDiaSeguinte);
 
         List<Consulta> listaConsultas = this.consultaServico.getListaConsultas();
+        System.out.println(listaConsultas.toString());
         ListIterator<Consulta> it = listaConsultas.listIterator();
 
         List<Consulta> relatorio = new ArrayList<>();
@@ -124,6 +126,7 @@ public class SecretariaServico {
             Consulta consulta = it.next();
 
             LocalDate dataDaConsulta = consulta.getDataHora().toLocalDate();
+            System.out.println(dataDaConsulta);
 
             if (dataDaConsulta.isEqual(dataDiaSeguinte)) {
                 Paciente paciente = consulta.getPaciente();

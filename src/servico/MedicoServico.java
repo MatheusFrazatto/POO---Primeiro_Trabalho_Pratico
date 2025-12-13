@@ -1,7 +1,10 @@
-package servico;
+    package servico;
 
 import modelo.*;
+import utilitario.JPAUtil;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,76 @@ public class MedicoServico {
      */
     public MedicoServico(PacienteServico pacienteServico) {
         this.pacienteServico = pacienteServico;
+    }
+
+    /**
+     * Salva ou atualiza um médico no banco de dados.
+     * Se o médico é novo (ID 0), ele é persistido. Caso contrário, é atualizado.
+     *
+     * @param medico O objeto Medico a ser salvo.
+     */
+    public void salvar(Medico medico) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (medico.getId() == 0) {
+                em.persist(medico);
+            } else {
+                em.merge(medico);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Busca um médico pelo seu ID.
+     *
+     * @param id O ID do médico.
+     * @return O objeto Medico encontrado ou null se não existir.
+     */
+    public Medico buscarPorId(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Medico.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Retorna uma lista com todos os médicos cadastrados.
+     *
+     * @return Uma lista de objetos Medico.
+     */
+    public List<Medico> listarTodos() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Medico> query = em.createQuery("FROM Medico", Medico.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Remove um médico do banco de dados pelo seu ID.
+     *
+     * @param id O ID do médico a ser removido.
+     */
+    public void remover(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Medico medico = em.find(Medico.class, id);
+            if (medico != null) {
+                em.remove(medico);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     /**
@@ -213,6 +286,21 @@ public class MedicoServico {
             }
         }
         return pacientesAtendidos;
+    }
+
+    /**
+     * Retorna a contagem total de médicos no banco de dados.
+     *
+     * @return O número total de médicos.
+     */
+    public long count() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Long> query = em.createQuery("SELECT COUNT(m) FROM Medico m", Long.class);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
     }
 
 

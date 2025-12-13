@@ -502,9 +502,9 @@ public class TelaSecretaria extends javax.swing.JFrame {
 
     private void btnGerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarActionPerformed
         String filtro = rbEmail.isSelected() ? "EMAIL" : "TELEFONE";
-        LocalDateTime amanha = LocalDate.now().plusDays(1).atStartOfDay();
+        LocalDateTime hoje = LocalDate.now().atStartOfDay();
         
-        List<Consulta> lista = Main.secretariaServico.gerarRelatorioConsultas(amanha, filtro);
+        List<Consulta> lista = Main.secretariaServico.gerarRelatorioConsultas(hoje, filtro);
         
         StringBuilder sb = new StringBuilder();
         sb.append("--- RELATÓRIO DE AMANHÃ (" + filtro + ") ---\n");
@@ -760,7 +760,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         DefaultComboBoxModel modelM = (DefaultComboBoxModel) cbMedico.getModel();
         modelM.removeAllElements();
         modelM.addElement("Selecione...");
-        for (Medico m : Main.medicosDaClinica) {
+        for (Medico m : Main.medicoServico.listarTodos()) {
             modelM.addElement(m);
         }
     }
