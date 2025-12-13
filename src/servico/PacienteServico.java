@@ -1,29 +1,24 @@
 package servico;
 
-import modelo.*;
+import modelo.Contato;
+import modelo.Endereco;
+import modelo.Paciente;
+import utilitario.JPAUtil;
 import utilitario.TipoConvenio;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Serviço responsável por gerenciar as operações relacionadas a Pacientes.
- * Inclui métodos para cadastrar, atualizar, remover e buscar pacientes.
+ * Inclui métodos para cadastrar, atualizar, remover e buscar pacientes,
+ * utilizando JPA para persistência de dados.
  */
 public class PacienteServico {
-    private List<Paciente> listaPacientes = new ArrayList<>();
-    private int proximoIdPaciente = 1;
-
-    /**
-     * Construtor padrão para o PacienteServico.
-     */
-    public PacienteServico() {
-    }
 
     /**
      * Cadastra um novo paciente no sistema.
-     * Atribui um ID único ao novo paciente.
      *
      * @param nome           O nome completo do paciente.
      * @param cpf            O CPF do paciente.
@@ -31,17 +26,26 @@ public class PacienteServico {
      * @param endereco       O endereço do paciente.
      * @param contato        As informações de contato do paciente.
      * @param tipoConvenio   O tipo de convênio (plano de saúde ou particular).
-     * @return O objeto Paciente recém-cadastrado.
+     * @return O objeto Paciente recém-cadastrado e persistido.
      */
     public Paciente cadastrarPaciente(String nome, String cpf, LocalDate dataNascimento, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
         Paciente novoPaciente = new Paciente(0, nome, cpf, dataNascimento, endereco, contato, tipoConvenio);
-        novoPaciente.setId(proximoIdPaciente++);
-        this.listaPacientes.add(novoPaciente);
-        return novoPaciente;
+        
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(novoPaciente);
+            em.getTransaction().commit();
+            return novoPaciente;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     /**
-     * Atualiza os dados cadastrais de um paciente existente (exceto CPF e Data de Nascimento).
+     * Atualiza os dados cadastrais de um paciente existente.
      *
      * @param id           O ID do paciente a ser atualizado.
      * @param nome         O novo nome.
@@ -51,15 +55,24 @@ public class PacienteServico {
      * @return {@code true} se o paciente foi encontrado e atualizado, {@code false} caso contrário.
      */
     public boolean atualizarPaciente(int id, String nome, Endereco endereco, Contato contato, TipoConvenio tipoConvenio) {
-        Paciente paciente = buscarPacientePorId(id);
-        if (paciente != null) {
-            paciente.setNome(nome);
-            paciente.setEndereco(endereco);
-            paciente.setContato(contato);
-            paciente.setTipoConvenio(tipoConvenio);
-            return true;
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            Paciente paciente = em.find(Paciente.class, id);
+            if (paciente != null) {
+                em.getTransaction().begin();
+                paciente.setNome(nome);
+                paciente.setEndereco(endereco);
+                paciente.setContato(contato);
+                paciente.setTipoConvenio(tipoConvenio);
+                em.getTransaction().commit();
+                return true;
+            }
+            return false;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
         }
-        return false;
     }
 
     /**
@@ -69,12 +82,14 @@ public class PacienteServico {
      * @return O objeto Paciente correspondente ao ID, ou {@code null} se não for encontrado.
      */
     public Paciente buscarPacientePorId(int id) {
-        for (Paciente paciente : listaPacientes) {
-            if (paciente.getId() == id) {
-                return paciente;
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Paciente.class, id);
+        } finally {
+            if (em.isOpen()) {
+                em.close();
             }
         }
-        return null;
     }
 
     /**
@@ -84,12 +99,27 @@ public class PacienteServico {
      * @return {@code true} se o paciente foi encontrado e removido, {@code false} caso contrário.
      */
     public boolean removerPaciente(int id) {
-        Paciente paciente = buscarPacientePorId(id);
-        if (paciente != null) {
-            this.listaPacientes.remove(paciente);
-            return true;
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            Paciente paciente = em.find(Paciente.class, id);
+            if (paciente != null) {
+                em.getTransaction().begin();
+                em.remove(paciente);
+                em.getTransaction().commit();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            // Logar a exceção pode ser útil aqui
+            return false;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
         }
-        return false;
     }
 
     /**
@@ -98,6 +128,13 @@ public class PacienteServico {
      * @return Uma lista de objetos Paciente.
      */
     public List<Paciente> getListaPacientes() {
-        return this.listaPacientes;
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Paciente p", Paciente.class).getResultList();
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 }
