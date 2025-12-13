@@ -109,19 +109,47 @@ public class MedicoServico {
      * @return {@code true} se o paciente foi encontrado e os dados atualizados, {@code false} caso contrário.
      */
     public boolean atualizarDadosAdicionais(int idPaciente, boolean fuma, boolean bebe, boolean colesterol, boolean diabetes, String doencasCardiacas, String cirurgias, String alergias) {
-        Paciente paciente = pacienteServico.buscarPacientePorId(idPaciente);
-        if (paciente != null) {
-            DadosAdicionais dadosAdicionais = paciente.getDadosAdicionais();
-            dadosAdicionais.setFuma(fuma);
-            dadosAdicionais.setBebe(bebe);
-            dadosAdicionais.setColesterol(colesterol);
-            dadosAdicionais.setDiabete(diabetes);
-            dadosAdicionais.setDoencasCardiacas(doencasCardiacas);
-            dadosAdicionais.setCirurgias(cirurgias);
-            dadosAdicionais.setAlergias(alergias);
-            return true;
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            // 2. Busca o paciente (agora gerenciado por esta conexão)
+            Paciente paciente = em.find(Paciente.class, idPaciente);
+            
+            if (paciente != null) {
+                em.getTransaction().begin(); // Inicia a gravação
+                
+                DadosAdicionais dadosAdicionais = paciente.getDadosAdicionais();
+                
+                // Prevenção: Se não existir os dados ainda, cria um novo objeto
+                if (dadosAdicionais == null) {
+                    dadosAdicionais = new DadosAdicionais();
+                    paciente.setDadosAdicionais(dadosAdicionais);
+                }
+                
+                // Atualiza os valores
+                dadosAdicionais.setFuma(fuma);
+                dadosAdicionais.setBebe(bebe);
+                dadosAdicionais.setColesterol(colesterol);
+                dadosAdicionais.setDiabete(diabetes);
+                dadosAdicionais.setDoencasCardiacas(doencasCardiacas);
+                dadosAdicionais.setCirurgias(cirurgias);
+                dadosAdicionais.setAlergias(alergias);
+                
+                // 3. O PULO DO GATO: Salva (merge) e Confirma (commit)
+                em.merge(paciente);
+                em.getTransaction().commit(); 
+                
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
         }
-        return false;
     }
 
     /**
@@ -151,13 +179,34 @@ public class MedicoServico {
      * @return {@code true} se o paciente foi encontrado e o prontuário cadastrado, {@code false} caso contrário.
      */
     public boolean cadastrarProntuario(int idPaciente, Medico medico, String sintomas, String diagnostico, String prescricao) {
-        Paciente paciente = pacienteServico.buscarPacientePorId(idPaciente);
-        if (paciente != null) {
-            Prontuario novoProntuario = new Prontuario(0, LocalDate.now(), sintomas, diagnostico, prescricao, medico);
-            paciente.adicionarProntuario(novoProntuario);
-            return true;
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+  
+            Paciente paciente = em.find(Paciente.class, idPaciente);
+
+            if (paciente != null) {
+                em.getTransaction().begin();
+
+                Prontuario novoProntuario = new Prontuario(0, LocalDate.now(), sintomas, diagnostico, prescricao, medico);
+                novoProntuario.setPaciente(paciente);
+
+                paciente.adicionarProntuario(novoProntuario);
+
+                em.merge(paciente);
+
+                em.getTransaction().commit();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
         }
-        return false;
     }
 
     /**
@@ -192,11 +241,31 @@ public class MedicoServico {
      * @return {@code true} se o paciente foi encontrado e o prontuário removido, {@code false} caso contrário.
      */
     public boolean removerProntuario(int idPaciente, int idProntuario) {
-        Paciente paciente = pacienteServico.buscarPacientePorId(idPaciente);
-        if (paciente != null) {
-            return paciente.removerProntuarioPorId(idProntuario);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            Paciente paciente = em.find(Paciente.class, idPaciente);
+
+            if (paciente != null) {
+                em.getTransaction().begin();
+
+                boolean removeu = paciente.removerProntuarioPorId(idProntuario);
+
+                if (removeu) {
+                    em.merge(paciente); 
+                    em.getTransaction().commit(); 
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
         }
-        return false;
     }
 
     /**

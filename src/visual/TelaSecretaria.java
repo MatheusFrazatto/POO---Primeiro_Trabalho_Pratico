@@ -94,6 +94,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
+        btnVoltarS = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -237,7 +238,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         });
         jPanel1.add(rbParticular, new org.netbeans.lib.awtextra.AbsoluteConstraints(115, 314, 98, -1));
 
-        btnNovo.setText("Novo");
+        btnNovo.setText("Limpar");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoActionPerformed(evt);
@@ -287,7 +288,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabelaPacientes);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-4, 376, 790, 170));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-4, 376, 790, 140));
 
         jTabbedPane1.addTab("Pacientes", jPanel1);
 
@@ -417,6 +418,14 @@ public class TelaSecretaria extends javax.swing.JFrame {
         jTabbedPane1.addTab("Relatórios", jPanel3);
 
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 780, 580));
+
+        btnVoltarS.setText("Voltar");
+        btnVoltarS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarSActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnVoltarS, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -617,6 +626,13 @@ public class TelaSecretaria extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbPacienteActionPerformed
 
+    private void btnVoltarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarSActionPerformed
+        TelaPrincipal telaPrincipal = new TelaPrincipal();
+        telaPrincipal.setVisible(true);
+    
+        this.dispose();
+    }//GEN-LAST:event_btnVoltarSActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -649,6 +665,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
     private javax.swing.JButton btnGerar;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVoltarS;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;

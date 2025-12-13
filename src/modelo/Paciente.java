@@ -31,7 +31,7 @@ public class Paciente {
     @Embedded
     private DadosAdicionais dadosAdicionais;
 
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Prontuario> prontuarios;
 
     public Paciente() {
