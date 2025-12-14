@@ -1,7 +1,7 @@
 package visual;
 
 /**
- * Tela principal da aplicação Clínica Saúde & Cia.
+ * Tela principal da aplicação Clínica Saúde e Cia.
  * <p>
  * Serve como o menu inicial do sistema, permitindo a navegação para
  * as interfaces específicas de Secretária e Médico, além de permitir o encerramento da aplicação.

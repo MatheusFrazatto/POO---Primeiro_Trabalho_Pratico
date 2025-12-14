@@ -170,7 +170,7 @@ public class TelaMedico extends javax.swing.JFrame {
     
     /**
      * Preenche os ComboBoxes de Médicos e Pacientes com dados do banco de dados.
-     * Utiliza os serviços {@link MedicoServico} e {@link PacienteServico}.
+     * Utiliza os serviços MedicoServico e PacienteServico.
      */
     private void preencherComboBoxes() {
         try {
