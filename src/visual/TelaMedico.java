@@ -6,6 +6,14 @@ import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import java.util.List;
 
+/**
+ * Interface gráfica responsável pelas operações do Médico.
+ * <p>
+ * Permite a visualização e gestão de prontuários médicos, atualização de dados
+ * adicionais de saúde dos pacientes, emissão de documentos (atestados, receitas, declarações)
+ * e geração de relatórios de atendimentos mensais.
+ * </p>
+ */
 public class TelaMedico extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaMedico.class.getName());
@@ -26,23 +34,36 @@ public class TelaMedico extends javax.swing.JFrame {
         tabelaProntuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int linha = tabelaProntuario.getSelectedRow();
-                if (linha != -1) {
-                    // Supondo que as colunas sejam: 0=ID, 1=Data, 2=Medico, 3=Diagnostico
-                    // Nota: Para pegar Sintomas e Prescrição, você precisaria buscar o objeto completo
-                    // ou adicionar essas colunas como ocultas na tabela.
 
-                    // Exemplo simples preenchendo o que está visível:
-                    String diag = tabelaProntuario.getValueAt(linha, 3).toString();
-                    txtDiagnostico.setText(diag);
+                if (linha != -1 && cbPaciente.getSelectedItem() instanceof Paciente) {
 
-                    // DICA: O ideal aqui seria buscar o Prontuario completo pelo ID (coluna 0)
-                    // Prontuario p = Main.medicoServico.buscarPorId((int) tabelaProntuario.getValueAt(linha, 0));
-                    // txtSintomas.setText(p.getSintomas()); ... etc
+                    int idProntuario = (int) tabelaProntuario.getValueAt(linha, 0);
+
+                    Paciente p = (Paciente) cbPaciente.getSelectedItem();
+
+                    if (p.getHistoricoProntuarios() != null) {
+                        for (Prontuario pront : p.getHistoricoProntuarios()) {
+                            if (pront.getId() == idProntuario) {
+                                txtSintomas.setText(pront.getSintomas());
+                                txtDiagnostico.setText(pront.getDiagnostico());
+                                txtPrescricao.setText(pront.getPrescricao());
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         });
     }
     
+    /**
+     * Carrega os dados completos do paciente selecionado no ComboBox.
+     * <p>
+     * Busca o paciente atualizado no banco de dados, preenche os campos da aba de 
+     * "Dados Adicionais" (hábitos, doenças, cirurgias), atualiza a tabela de histórico 
+     * de prontuários e gera o resumo de saúde no display.
+     * </p>
+     */
     private void carregarDadosDoPaciente() {
         if (cbPaciente.getSelectedIndex() <= 0) return;
     
@@ -94,7 +115,16 @@ public class TelaMedico extends javax.swing.JFrame {
             txtDisplaySaude.setText("Nenhum dado adicional registrado para este paciente.");
         }
     }
-
+    
+    /**
+     * Atualiza a tabela de prontuários com o histórico do paciente.
+     * <p>
+     * Limpa a tabela atual e preenche com os prontuários associados ao paciente,
+     * exibindo ID, data, nome do médico e diagnóstico.
+     * </p>
+     *
+     * @param p O objeto Paciente cujos prontuários serão listados.
+     */
     private void atualizarTabelaProntuarios(Paciente p) {
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tabelaProntuario.getModel();
         modelo.setNumRows(0);
@@ -112,6 +142,10 @@ public class TelaMedico extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Limpa os campos da aba de Dados Adicionais.
+     * Reseta checkboxes e campos de texto para o estado inicial.
+     */
     private void limparAbaDadosAdicionais() {
         cbFuma.setSelected(false);
         cbBebe.setSelected(false); 
@@ -121,6 +155,10 @@ public class TelaMedico extends javax.swing.JFrame {
         txtAlergias.setText("");
     }
     
+    /**
+     * Valida se um Médico e um Paciente foram selecionados nos ComboBoxes.
+     * * @return true se ambos estiverem selecionados, false caso contrário.
+     */
     private boolean validarSelecao() {
         if (cbMedico.getSelectedIndex() <= 0 || cbPaciente.getSelectedIndex() <= 0) {
             JOptionPane.showMessageDialog(this, "Erro: Selecione Médico e Paciente no topo da tela!");
@@ -129,6 +167,10 @@ public class TelaMedico extends javax.swing.JFrame {
         return true;
     }    
     
+    /**
+     * Preenche os ComboBoxes de Médicos e Pacientes com dados do banco de dados.
+     * Utiliza os serviços {@link MedicoServico} e {@link PacienteServico}.
+     */
     private void preencherComboBoxes() {
         try {
             DefaultComboBoxModel modelM = (DefaultComboBoxModel) cbMedico.getModel();
@@ -266,6 +308,11 @@ public class TelaMedico extends javax.swing.JFrame {
         jPanel1.add(btnExcluirProntuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, -1, -1));
 
         btnLimparProntuario.setText("Limpar");
+        btnLimparProntuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparProntuarioActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnLimparProntuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 100, -1, -1));
 
         tabelaProntuario.setModel(new javax.swing.table.DefaultTableModel(
@@ -429,11 +476,15 @@ public class TelaMedico extends javax.swing.JFrame {
                 btnVoltarMActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVoltarM, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, -1, -1));
+        getContentPane().add(btnVoltarM, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Salva um novo prontuário no banco de dados.
+     * Coleta os dados de sintomas, diagnóstico e prescrição e chama o serviço para persistência.
+     * * @param evt O evento de ação gerado pelo clique no botão Salvar.
+     */
     private void btnSalvarProntuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarProntuarioActionPerformed
         if (cbMedico.getSelectedIndex() <= 0 || cbPaciente.getSelectedIndex() <= 0) {
         JOptionPane.showMessageDialog(this, "Erro: Selecione Médico e Paciente no topo da tela!");
@@ -470,7 +521,11 @@ public class TelaMedico extends javax.swing.JFrame {
     private void cbDiabeticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDiabeticoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbDiabeticoActionPerformed
-
+    
+    /**
+     * Salva ou atualiza os dados adicionais de saúde do paciente (hábitos, doenças, etc).
+     * * @param evt O evento de ação gerado pelo clique no botão Salvar.
+     */
     private void btnSalvarDadosAdicionaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarDadosAdicionaisActionPerformed
         if (cbPaciente.getSelectedIndex() <= 0) {
             JOptionPane.showMessageDialog(this, "Selecione um Paciente no topo da tela!");
@@ -512,7 +567,11 @@ public class TelaMedico extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnSalvarDadosAdicionaisActionPerformed
-
+    
+    /**
+     * Gera um atestado médico formatado na área de texto.
+     * * @param evt O evento de ação gerado pelo clique no botão Gerar Atestado.
+     */
     private void btnGerarAtestadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarAtestadoActionPerformed
         if (validarSelecao()) {
             try {
@@ -532,7 +591,11 @@ public class TelaMedico extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnGerarAtestadoActionPerformed
-
+    
+    /**
+     * Gera uma receita médica formatada na área de texto.
+     * * @param evt O evento de ação gerado pelo clique no botão Gerar Receita.
+     */
     private void btnGerarReceitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarReceitaActionPerformed
         if (validarSelecao()) {
             try {
@@ -550,7 +613,11 @@ public class TelaMedico extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnGerarReceitaActionPerformed
-
+    
+    /**
+     * Gera uma declaração de acompanhamento formatada na área de texto.
+     * * @param evt O evento de ação gerado pelo clique no botão Gerar Declaração.
+     */
     private void btnGerarDeclaracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarDeclaracaoActionPerformed
         if (validarSelecao()) {
             try {
@@ -569,7 +636,11 @@ public class TelaMedico extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnGerarDeclaracaoActionPerformed
-
+    /**
+     * Exclui o prontuário selecionado na tabela.
+     * Solicita confirmação antes de realizar a exclusão.
+     * * @param evt O evento de ação gerado pelo clique no botão Excluir.
+     */
     private void btnExcluirProntuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirProntuarioActionPerformed
         int linhaSelecionada = tabelaProntuario.getSelectedRow();
     
@@ -607,7 +678,11 @@ public class TelaMedico extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnExcluirProntuarioActionPerformed
-
+    
+    /**
+     * Fecha a tela atual e retorna para a Tela Principal.
+     * * @param evt O evento de ação gerado pelo clique no botão Voltar.
+     */
     private void btnVoltarMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarMActionPerformed
         TelaPrincipal telaPrincipal = new TelaPrincipal();
         telaPrincipal.setVisible(true);
@@ -618,7 +693,11 @@ public class TelaMedico extends javax.swing.JFrame {
     private void txtMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMesActionPerformed
-
+    
+    /**
+     * Fecha a tela atual e retorna para a Tela Principal.
+     * * @param evt O evento de ação gerado pelo clique no botão Voltar.
+     */
     private void btnRelatorioMensalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioMensalActionPerformed
         if (cbMedico.getSelectedIndex() <= 0) {
             JOptionPane.showMessageDialog(this, "Selecione um médico no topo da tela!");
@@ -665,6 +744,13 @@ public class TelaMedico extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnRelatorioMensalActionPerformed
+
+    private void btnLimparProntuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparProntuarioActionPerformed
+        txtSintomas.setText("");
+        txtDiagnostico.setText("");
+        txtPrescricao.setText("");
+        tabelaProntuario.clearSelection();
+    }//GEN-LAST:event_btnLimparProntuarioActionPerformed
 
     /**
      * @param args the command line arguments

@@ -1,5 +1,12 @@
 package visual;
 
+/**
+ * Tela principal da aplicação Clínica Saúde & Cia.
+ * <p>
+ * Serve como o menu inicial do sistema, permitindo a navegação para
+ * as interfaces específicas de Secretária e Médico, além de permitir o encerramento da aplicação.
+ * </p>
+ */
 public class TelaPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaPrincipal.class.getName());
