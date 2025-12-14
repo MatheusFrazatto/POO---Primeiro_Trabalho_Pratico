@@ -22,6 +22,7 @@ public class TelaMedico extends javax.swing.JFrame {
      * Creates new form TelaMedico
      */
     public TelaMedico() {
+        Main.inicializarDados();
         initComponents();
         preencherComboBoxes();
         
